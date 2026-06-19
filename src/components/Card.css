@@ -1,0 +1,85 @@
+.card-container {
+  position: fixed;
+  left: 25vw;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 460px;
+  min-height: 460px;
+  height: auto;
+  z-index: 10;
+  perspective: 1000px;
+  pointer-events: none;
+  /* Let the container pass clicks */
+}
+
+.glass-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.02);
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  /* Re-enable interaction for the card */
+  cursor: pointer;
+}
+
+/* Subtle glow behind the card */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 42, 95, 0.2) 0%, rgba(122, 34, 255, 0) 100%);
+  filter: blur(20px);
+  z-index: -1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+.card-icon {
+  font-size: 3.5rem;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  text-shadow: 0 0 20px rgba(255, 42, 95, 0.5);
+  transform: translateZ(50px);
+  /* Extrudes the icon in 3D space */
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transform: translateZ(30px);
+  /* Extrudes all content in 3D space */
+}
+
+.card-content h3 {
+  font-size: 2rem;
+  margin: 0 0 16px 0;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.card-content p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+.card-footer {
+  margin-top: 24px;
+  transform: translateZ(40px);
+  /* Extrudes button even further */
+}

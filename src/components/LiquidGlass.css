@@ -1,0 +1,68 @@
+/* Liquid Glass Toggle Styling */
+.liquid-glass-toggle {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: 340px;
+  height: 70px;
+  border-radius: 100px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: liquidBreathing 4s infinite ease-in-out;
+}
+
+.liquid-glass-toggle:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  width: 164px;
+  height: 58px;
+  border-radius: 100px;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.6s ease;
+  z-index: 1;
+}
+
+.toggle-slider.work {
+  background: linear-gradient(135deg, rgba(255, 42, 95, 0.8), rgba(122, 34, 255, 0.8));
+  box-shadow: 0 4px 20px rgba(255, 42, 95, 0.4);
+}
+
+.toggle-slider.gaming {
+  transform: translateX(164px);
+  background: linear-gradient(135deg, rgba(0, 255, 204, 0.8), rgba(0, 136, 255, 0.8));
+  box-shadow: 0 4px 20px rgba(0, 255, 204, 0.4);
+}
+
+.toggle-label {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  transition: color 0.4s ease;
+}
+
+@keyframes liquidBreathing {
+  0% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.15); }
+  50% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.3); }
+  100% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.15); }
+}

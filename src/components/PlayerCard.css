@@ -1,0 +1,205 @@
+.player-card-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1500px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  touch-action: none;
+}
+
+.player-card-container:active {
+  cursor: grabbing;
+}
+
+.player-card {
+  width: 380px;
+  height: 560px;
+  position: relative;
+  transform-style: preserve-3d;
+  /* smooth rotation when not dragging */
+  transition: transform 0.1s ease-out;
+}
+
+/* Common Face Styling */
+.card-face {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 24px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+/* Front Face */
+.card-front {
+  background: linear-gradient(145deg, rgba(20,20,25,0.9), rgba(10,10,12,0.95));
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2), inset 0 0 0 1px rgba(255,255,255,0.1);
+  transform: rotateY(0deg);
+  transform-style: preserve-3d;
+}
+
+/* Back Face */
+.card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, rgba(10,10,12,0.95), rgba(20,20,25,0.9));
+  border: 1px solid rgba(255, 42, 95, 0.3);
+  box-shadow: 0 0 20px rgba(255, 42, 95, 0.2), inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.card-back-logo {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 42, 95, 0.8);
+  letter-spacing: 15px;
+  text-shadow: 0 0 20px rgba(255, 42, 95, 0.4);
+}
+
+/* Glare and Foil (Inside Front Face) */
+.card-glare {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 24px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+.card-foil {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(0, 255, 204, 0.3), rgba(0, 136, 255, 0.1), transparent 60%);
+  background-size: 200% 200%;
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Card Inner Content */
+.card-content {
+  position: relative;
+  z-index: 20;
+  padding: 2.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translateZ(40px); /* 3D pop effect */
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-rank {
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  color: var(--color-primary);
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+.card-glitch-text {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  text-shadow: 3px 3px 0px rgba(255, 42, 95, 0.7);
+}
+
+.card-avatar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.avatar-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(0, 255, 204, 0.05);
+  border: 2px dashed rgba(0, 255, 204, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 0 20px rgba(0, 255, 204, 0.05); border-color: rgba(0, 255, 204, 0.2); }
+  to { box-shadow: 0 0 50px rgba(0, 255, 204, 0.3); border-color: rgba(0, 255, 204, 0.6); }
+}
+
+.card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background: rgba(0,0,0,0.5);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.stat-row strong {
+  margin-left: auto;
+  color: #fff;
+  font-size: 1.1rem;
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.card-footer {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0.6;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.barcode {
+  width: 100px;
+  height: 20px;
+  background: repeating-linear-gradient(
+    90deg,
+    #fff,
+    #fff 2px,
+    transparent 2px,
+    transparent 4px,
+    #fff 4px,
+    #fff 5px,
+    transparent 5px,
+    transparent 8px
+  );
+  opacity: 0.8;
+}

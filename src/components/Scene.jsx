@@ -1,0 +1,72 @@
+import React, { useEffect } from 'react';
+import Spline from '@splinetool/react-spline';
+
+export default function Scene({ scrollY = 0, isGamingMode = false }) {
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
+  const zoomThreshold = vh * 1.2; // The point where we start zooming out (right after Experience)
+  
+  let scale = 1;
+  let opacity = 1;
+  let yOffset = scrollY * 0.15;
+  
+  if (scrollY < zoomThreshold) {
+    // Zoom IN slowly during the intro and Experience section
+    scale = 1 + scrollY * 0.0005;
+  } else {
+    // Zoom OUT aggressively after the Experience section
+    const maxScale = 1 + zoomThreshold * 0.0005;
+    const scrollPast = scrollY - zoomThreshold;
+    
+    // Shrink down until it completely vanishes
+    scale = Math.max(0, maxScale - scrollPast * 0.0015);
+    
+    // Fade out the transparency so it dissolves into the black background
+    opacity = Math.max(0, 1 - scrollPast * 0.002);
+  }
+  
+  const parallaxTransform = `translateX(-25vw) translateY(${yOffset}px) scale(${scale})`;
+  
+  // 300deg = Hot Pink (Office), 180deg = Cyan (Gaming)
+  const hueRotation = isGamingMode ? '180deg' : '300deg';
+
+  // Intercept the wheel event before it reaches the Spline canvas.
+  // 3D libraries often capture mouse wheel events (for zooming) and call e.preventDefault(),
+  // which breaks page scrolling. By stopping propagation here, the browser scrolls normally!
+  useEffect(() => {
+    const allowScroll = (e) => {
+      e.stopPropagation();
+    };
+    window.addEventListener('wheel', allowScroll, { capture: true, passive: true });
+    return () => window.removeEventListener('wheel', allowScroll, { capture: true });
+  }, []);
+
+  // Smoothly blend background based on gaming mode!
+  const bgOpacity = isGamingMode ? Math.min(1, scrollY / 500) : 0;
+
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, background: 'transparent', overflow: 'hidden' }}>
+      
+      {/* Dark gaming background layer */}
+      <div style={{
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        background: `rgba(5, 5, 8, ${bgOpacity})`,
+        zIndex: 1,
+        pointerEvents: 'none',
+        transition: 'background 0.5s ease'
+      }} />
+
+      <Spline 
+        scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
+        style={{
+          width: '150vw',
+          height: '100vh',
+          transform: parallaxTransform,
+          opacity: opacity,
+          filter: `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.1)`,
+          transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease-in-out'
+        }}
+      />
+    </div>
+  );
+}
