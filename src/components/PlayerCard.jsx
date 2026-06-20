@@ -5,13 +5,15 @@ import { Gamepad2 } from 'lucide-react';
 export default function PlayerCard() {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const draggingRef = useRef(false);
+  const containerRef = useRef(null);
   const lastPosRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     if (!isDragging) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const handleWindowMove = (e) => {
+    const handleMove = (e) => {
       const deltaX = e.clientX - lastPosRef.current.x;
       const deltaY = e.clientY - lastPosRef.current.y;
       lastPosRef.current = { x: e.clientX, y: e.clientY };
@@ -22,7 +24,7 @@ export default function PlayerCard() {
       }));
     };
 
-    const handleWindowUp = () => {
+    const handleUp = () => {
       setIsDragging(false);
       setRotation(prev => ({
         x: Math.round(prev.x / 180) * 180,
@@ -30,19 +32,23 @@ export default function PlayerCard() {
       }));
     };
 
-    window.addEventListener('pointermove', handleWindowMove);
-    window.addEventListener('pointerup', handleWindowUp);
-    window.addEventListener('pointercancel', handleWindowUp);
+    // Scope to container element only — do NOT add to window
+    container.addEventListener('pointermove', handleMove);
+    container.addEventListener('pointerup', handleUp);
+    container.addEventListener('pointercancel', handleUp);
+    container.setPointerCapture && container.setPointerCapture(container._capturedPointerId);
 
     return () => {
-      window.removeEventListener('pointermove', handleWindowMove);
-      window.removeEventListener('pointerup', handleWindowUp);
-      window.removeEventListener('pointercancel', handleWindowUp);
+      container.removeEventListener('pointermove', handleMove);
+      container.removeEventListener('pointerup', handleUp);
+      container.removeEventListener('pointercancel', handleUp);
     };
   }, [isDragging]);
 
   const handlePointerDown = (e) => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    containerRef.current._capturedPointerId = e.pointerId;
     lastPosRef.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
   };
@@ -53,6 +59,7 @@ export default function PlayerCard() {
 
   return (
     <div 
+      ref={containerRef}
       className="player-card-container" 
       onPointerDown={handlePointerDown}
       onDragStart={(e) => e.preventDefault()} // CRITICAL: Prevent HTML5 drag-and-drop hijacking

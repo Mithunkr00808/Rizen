@@ -1,10 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Spline from '@splinetool/react-spline';
 
 export default function Scene({ scrollY = 0, isGamingMode = false }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
   const zoomThreshold = vh * 1.2; // The point where we start zooming out (right after Experience)
   
+  useEffect(() => {
+    // Delay the incredibly heavy WebGL initialization until after initial page load animations
+    const timer = setTimeout(() => setShouldLoad(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   let scale = 1;
   let opacity = 1;
   let yOffset = scrollY * 0.15;
@@ -46,6 +54,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 0, background: 'transparent', overflow: 'hidden' }}>
       
+
       {/* Dark gaming background layer */}
       <div style={{
         position: 'absolute',
@@ -56,17 +65,37 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
         transition: 'background 0.5s ease'
       }} />
 
-      <Spline 
-        scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
-        style={{
-          width: '150vw',
-          height: '100vh',
-          transform: parallaxTransform,
-          opacity: opacity,
-          filter: `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.1)`,
-          transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease-in-out'
-        }}
-      />
+
+
+      {/* Animated Wrapper for Spline */}
+      <div style={{
+        width: '100%',
+        height: '100%',
+        opacity: isLoaded ? opacity : 0,
+        transition: 'opacity 2.5s ease-in-out',
+        position: 'absolute',
+        top: 0,
+        left: 0
+      }}>
+        {shouldLoad && (
+          <Spline 
+            scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
+            onLoad={() => {
+              // Force a slight delay so the browser registers the opacity: 0 state first
+              // allowing the CSS transition to fully trigger
+              setTimeout(() => setIsLoaded(true), 100);
+            }}
+            style={{
+              width: '150vw',
+              height: '100vh',
+              transform: parallaxTransform,
+              mixBlendMode: 'screen',
+              filter: `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.6)`,
+              transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease-in-out'
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

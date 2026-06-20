@@ -17,6 +17,7 @@
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   animation: liquidBreathing 4s infinite ease-in-out;
+  pointer-events: auto;
 }
 
 .liquid-glass-toggle:hover {

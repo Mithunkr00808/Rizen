@@ -71,13 +71,13 @@ export default function Card({ scrollY = 0 }) {
         width: '100%', // DO NOT REMOVE: Prevents flex container collapse
         height: '100%', // DO NOT REMOVE: Prevents flex container collapse
         opacity: cardOpacity,
-        filter: `blur(${cardBlur}px)`,
+        filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
         transform: `scale(${cardScale})`,
         transition: 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
       }}>
         <div
           ref={cardRef}
-          className="glass-card glass"
+          className="glass-card"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{
@@ -85,23 +85,15 @@ export default function Card({ scrollY = 0 }) {
             transition: rotation.x === 0 && rotation.y === 0 ? 'transform 0.5s ease-out' : 'none'
           }}
         >
-          <div className="card-content">
+          {/* Dedicated background layer for the glass effect to prevent 3D flattening bugs */}
+          <div className="glass" style={{ position: 'absolute', inset: 0, borderRadius: '24px', zIndex: 0, transform: 'translateZ(0)' }} />
+          
+          <div className="card-content" style={{ position: 'relative', zIndex: 1 }}>
             <div className="card-icon">✧</div>
             <h3>MITHUN KR</h3>
             <p style={{ fontWeight: 600, color: 'var(--color-primary)', marginBottom: '8px' }}>Software Engineer 2 @ Philips</p>
             <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', marginBottom: '16px', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Bengaluru, India • REVA University</p>
             <p>Specializing in Healthcare tech, including HL7, EDI, and PACS Integration.</p>
-            <div className="card-footer">
-              <a
-                href="https://www.linkedin.com/in/mithun-kr-034014328/"
-                target="_blank"
-                rel="noreferrer"
-                className="glass-button primary"
-              >
-                Connect
-              </a>
-              <button className="glass-button secondary">Projects</button>
-            </div>
           </div>
         </div>
       </div>

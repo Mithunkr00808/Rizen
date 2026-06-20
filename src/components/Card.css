@@ -51,16 +51,12 @@
   color: var(--color-primary);
   margin-bottom: 16px;
   text-shadow: 0 0 20px rgba(255, 42, 95, 0.5);
-  transform: translateZ(50px);
-  /* Extrudes the icon in 3D space */
 }
 
 .card-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  transform: translateZ(30px);
-  /* Extrudes all content in 3D space */
 }
 
 .card-content h3 {
@@ -80,6 +76,40 @@
 
 .card-footer {
   margin-top: 24px;
-  transform: translateZ(40px);
-  /* Extrudes button even further */
+  display: flex;
+  gap: 1rem;
+}
+
+/* Dedicated card buttons without backdrop-filter to prevent 3D rendering bugs */
+.card-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 100px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.card-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--shadow-color-light);
+}
+
+.card-btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: none;
+  box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.card-btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  filter: brightness(1.2);
+  box-shadow: 0 6px 20px var(--shadow-color-hover);
 }

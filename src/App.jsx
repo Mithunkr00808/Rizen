@@ -4,12 +4,15 @@ import Scene from './components/Scene';
 import Card from './components/Card';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
-import Projects from './components/Projects';
 import Footer from './components/Footer';
 
 import ScrollSection from './components/ScrollSection';
 import GamingToggle from './components/GamingToggle';
 import GamingSection from './components/GamingSection';
+import AuroraShader from './components/AuroraShader';
+import StarsCanvas from './components/canvas/Stars';
+
+const AURORA_COLORS = ["#ff2a5f", "#7a22ff", "#00ffcc"];
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
@@ -33,33 +36,35 @@ function App() {
 
   return (
     <div>
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>
+      </div>
       <Scene scrollY={scrollY} isGamingMode={isGamingMode} />
       <Card scrollY={scrollY} />
       <Header />
       
       {/* Portfolio Content Sections below the fold */}
-      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', paddingBottom: '10vh' }}>
-        <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
-          <Experience />
-        </ScrollSection>
-        
-        <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
-          <Skills />
-        </ScrollSection>
-        
-        <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
-          <Projects />
-        </ScrollSection>
+      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', paddingBottom: '10vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8vh', pointerEvents: 'none' }}>
+          <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
+            <Experience />
+          </ScrollSection>
+          
+          <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
+            <Skills />
+          </ScrollSection>
 
-        {/* Liquid Glass Gaming Switch */}
-        <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
-          <GamingToggle isGamingMode={isGamingMode} setIsGamingMode={setIsGamingMode} scrollY={scrollY} />
-        </ScrollSection>
+          {/* Liquid Glass Gaming Switch */}
+          <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
+            <GamingToggle isGamingMode={isGamingMode} setIsGamingMode={setIsGamingMode} scrollY={scrollY} />
+          </ScrollSection>
 
-        {/* Gaming Content (Only shows if gaming mode is active) */}
-        <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
-          <GamingSection isGamingMode={isGamingMode} />
-        </ScrollSection>
+          {/* Gaming Content (Only shows if gaming mode is active) */}
+          <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
+            <GamingSection isGamingMode={isGamingMode} />
+          </ScrollSection>
+        </div>
       </div>
       
       <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
