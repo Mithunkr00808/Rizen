@@ -10,23 +10,26 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const windowHeight = window.innerHeight;
+    const isMobile = window.innerWidth <= 768;
 
-    // Start sliding later (when it reaches 70% from the bottom).
-    // Finish sliding higher up the screen (10% from top) to make the slide much slower.
-    const startY = windowHeight * 0.70;
-    const endY = windowHeight * 0.10;
-    const totalDistance = startY - endY;
-    
-    // Calculate 0.0 to 1.0 progress
-    const currentProgress = Math.max(0, Math.min(1, (startY - rect.top) / totalDistance));
+    let currentProgress;
 
-    // Automatically trigger the global mode shift when it crosses the center!
-    if (currentProgress > 0.5 && !isGamingMode) {
-      setIsGamingMode(true);
-    } else if (currentProgress <= 0.5 && isGamingMode) {
-      setIsGamingMode(false);
+    if (isMobile) {
+      // On mobile: just track visibility for potential animations, but don't auto-toggle
+      const isVisible = rect.top < windowHeight && rect.bottom > 0;
+      currentProgress = isVisible && rect.top < windowHeight * 0.65 ? 1 : 0;
+    } else {
+      // Desktop: calculate progress for animations if needed
+      const startY = windowHeight * 0.70;
+      const endY = windowHeight * 0.10;
+      const totalDistance = startY - endY;
+      currentProgress = Math.max(0, Math.min(1, (startY - rect.top) / totalDistance));
     }
-  }, [scrollY, isGamingMode, setIsGamingMode]);
+    
+    // We intentionally removed the automatic setIsGamingMode trigger here
+    // because it was causing infinite loops and scroll jumping on mobile devices.
+    // The mode is now exclusively controlled by clicking the toggle!
+  }, [scrollY]);
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
 
@@ -45,10 +48,15 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     : 'linear-gradient(135deg, rgba(255, 42, 95, 0.8), rgba(122, 34, 255, 0.8))';
 
   const handleClick = () => {
-    if (!isGamingMode) {
-      window.scrollBy({ top: 300, behavior: 'smooth' });
+    if (isMobile) {
+      // On mobile, directly toggle the mode — the scroll-based detection can be unreliable
+      setIsGamingMode(prev => !prev);
     } else {
-      window.scrollBy({ top: -300, behavior: 'smooth' });
+      if (!isGamingMode) {
+        window.scrollBy({ top: 300, behavior: 'smooth' });
+      } else {
+        window.scrollBy({ top: -300, behavior: 'smooth' });
+      }
     }
   };
 
