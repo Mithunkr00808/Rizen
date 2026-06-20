@@ -19,7 +19,7 @@ function Loader() {
   );
 }
 
-const BmwModel = ({ onLoad }) => {
+const BmwModel = ({ onLoad, isMobile }) => {
   const { scene } = useGLTF('/bmw_m_hybrid_v8_lmdh.glb');
   
   useEffect(() => {
@@ -46,12 +46,19 @@ const BmwModel = ({ onLoad }) => {
   });
 
   return (
-    <primitive object={scene} position={[0, 0, 0]} scale={1.0} />
+    <primitive object={scene} position={[0, 0, 0]} scale={isMobile ? 0.6 : 1.0} />
   );
 };
 
 const BmwViewer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div style={{ 
@@ -63,30 +70,22 @@ const BmwViewer = () => {
     }}>
 
       {/* Content Row: Car + Map */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
 
         {/* Left side: Car Model */}
         <div style={{ 
           flex: 1, 
+          minWidth: '300px',
           height: '500px', 
           overflow: 'hidden', 
           position: 'relative', 
           zIndex: 10, 
           cursor: 'grab',
         }}>
-          {!isLoaded && (
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 11 }}>
-              <Canvas>
-                 <Suspense fallback={<Loader />}>
-                 </Suspense>
-              </Canvas>
-            </div>
-          )}
-
-          <Canvas camera={{ position: [5, 2, 5], fov: 35 }}>
-            <Suspense fallback={null}>
+          <Canvas camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
+            <Suspense fallback={<Loader />}>
               <Environment preset="city" />
-              <BmwModel onLoad={() => setIsLoaded(true)} />
+              <BmwModel onLoad={() => setIsLoaded(true)} isMobile={isMobile} />
               <OrbitControls 
                 autoRotate 
                 autoRotateSpeed={0.8} 
@@ -102,6 +101,7 @@ const BmwViewer = () => {
         {/* Right side: Nurburgring Map */}
         <div style={{ 
           flex: 1, 
+          minWidth: '300px',
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
@@ -123,9 +123,10 @@ const BmwViewer = () => {
       </div>
 
       {/* Labels Row: Both on the same line */}
-      <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
+      <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem', flexWrap: 'wrap' }}>
         <h3 style={{ 
           flex: 1, 
+          minWidth: '300px',
           color: '#fff', 
           margin: 0,
           fontFamily: 'monospace', 
@@ -139,6 +140,7 @@ const BmwViewer = () => {
         </h3>
         <h3 style={{ 
           flex: 1, 
+          minWidth: '300px',
           color: '#fff', 
           margin: 0,
           fontFamily: 'monospace', 
@@ -157,5 +159,8 @@ const BmwViewer = () => {
 };
 
 export default BmwViewer;
+
+// Preload the heavy GLTF model immediately in the background on page load
+useGLTF.preload('/bmw_m_hybrid_v8_lmdh.glb');
 
 

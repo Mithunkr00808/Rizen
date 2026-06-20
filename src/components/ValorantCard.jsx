@@ -1,18 +1,19 @@
 import React from 'react';
 import { Loader2, ShieldAlert, Crosshair, Clock, User, TrendingUp } from 'lucide-react';
 import useRiotStats from '../hooks/useRiotStats';
+import BorderGlow from './BorderGlow';
 
 export default function ValorantCard() {
   const { stats, isLoading, error } = useRiotStats();
 
   return (
-    <div 
-      className="glass" 
+    <BorderGlow
+      animated={true}
+      glowColor="350 100 60" // Valorant Red
+      colors={['#ff4655', '#ff0000', '#ff8a8a']}
+      borderRadius={24}
       style={{
         padding: '2rem',
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, rgba(255, 70, 85, 0.1) 0%, rgba(15, 25, 35, 0.8) 100%)',
-        border: '1px solid rgba(255, 70, 85, 0.2)',
         boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
         position: 'relative',
         overflow: 'hidden'
@@ -151,6 +152,6 @@ export default function ValorantCard() {
           </div>
         ) : null}
       </div>
-    </div>
+    </BorderGlow>
   );
 }

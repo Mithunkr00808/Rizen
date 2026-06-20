@@ -3,6 +3,7 @@ import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import { Code2, Monitor, Database, Server, Cpu, Layers, Activity, Network, HeartPulse, Palette, GitBranch, Briefcase } from 'lucide-react';
 import './Section.css';
+import GradientText from './GradientText';
 
 const fadeIn = (direction, type, delay, duration) => {
   return {
@@ -44,7 +45,11 @@ const Skills = () => {
   return (
     <section id="skills" className="portfolio-section">
       <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
-        <h2 className="text-gradient section-title">Technical Skills</h2>
+        <h2 className="section-title">
+          <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
+            Technical Skills
+          </GradientText>
+        </h2>
       </motion.div>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.5rem' }}>

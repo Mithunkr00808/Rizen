@@ -26,7 +26,7 @@ export default function useSteamStats() {
             title: game.name,
             playtime_2weeks: Math.round(game.playtime_2weeks / 60), // Convert minutes to hours
             playtime_forever: Math.round(game.playtime_forever / 60),
-            icon: `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${game.img_icon_url}.jpg`
+            icon: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/library_600x900.jpg`
           }));
           
           setGames(mappedGames.slice(0, 3)); // Only take top 3 recently played

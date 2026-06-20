@@ -11,16 +11,34 @@ import GamingToggle from './components/GamingToggle';
 import GamingSection from './components/GamingSection';
 import AuroraShader from './components/AuroraShader';
 import StarsCanvas from './components/canvas/Stars';
+import SplashScreen from './components/SplashScreen';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const AURORA_COLORS = ["#ff2a5f", "#7a22ff", "#00ffcc"];
+
+function Fallback({ error }) {
+  return (
+    <div style={{ color: 'red', padding: '2rem', background: 'rgba(255,0,0,0.1)', borderRadius: '10px' }}>
+      <h2>Gaming Section Crashed</h2>
+      <pre>{error.message}</pre>
+    </div>
+  );
+}
 
 function App() {
   const [scrollY, setScrollY] = useState(0);
   const [isGamingMode, setIsGamingMode] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -35,8 +53,9 @@ function App() {
   }, [isGamingMode]);
 
   return (
-    <div>
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
+    <div className="portfolio-container" style={{ position: 'relative' }}>
+      <SplashScreen />
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>
         <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>
       </div>
@@ -45,7 +64,7 @@ function App() {
       <Header />
       
       {/* Portfolio Content Sections below the fold */}
-      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', paddingBottom: '10vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8vh', pointerEvents: 'none' }}>
           <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
             <Experience />
@@ -61,15 +80,19 @@ function App() {
           </ScrollSection>
 
           {/* Gaming Content (Only shows if gaming mode is active) */}
-          <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
-            <GamingSection isGamingMode={isGamingMode} />
-          </ScrollSection>
+          <ErrorBoundary FallbackComponent={Fallback}>
+            <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
+              <GamingSection isGamingMode={isGamingMode} />
+            </ScrollSection>
+          </ErrorBoundary>
         </div>
       </div>
       
-      <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
-        <Footer />
-      </ScrollSection>
+      {isGamingMode && (
+        <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
+          <Footer />
+        </ScrollSection>
+      )}
     </div>
   );
 }

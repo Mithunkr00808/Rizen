@@ -10,7 +10,12 @@ export default function useSteamLibrary() {
     // Simulate a tiny delay for smooth UI transition
     const timer = setTimeout(() => {
       try {
-        setLibrary(steamData);
+        const enhancedData = steamData.map(game => ({
+          ...game,
+          icon: game.appid ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/library_600x900.jpg` : game.icon,
+          fallbackIcon: game.appid ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg` : game.icon
+        }));
+        setLibrary(enhancedData);
       } catch (err) {
         console.error("Failed to load static steam data", err);
         setError("Failed to load local Steam data.");

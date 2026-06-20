@@ -113,3 +113,16 @@
   filter: brightness(1.2);
   box-shadow: 0 6px 20px var(--shadow-color-hover);
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .card-container {
+    width: 90vw;
+    left: 5vw;
+    min-height: auto;
+  }
+  
+  .glass-card {
+    padding: 24px;
+  }
+}

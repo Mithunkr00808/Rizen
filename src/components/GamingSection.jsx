@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Cpu, MemoryStick, CircuitBoard, Monitor, Keyboard, Mouse, Gamepad2, Disc, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
@@ -11,6 +11,9 @@ import EarthCanvas from './canvas/Earth';
 import PlayCanvasViewer from './canvas/PlayCanvasViewer';
 import SteamGameCard from './SteamGameCard';
 import XboxGameCard from './XboxGameCard';
+import Carousel3D from './Carousel3D';
+import BorderGlow from './BorderGlow';
+import GradientText from './GradientText';
 import './Section.css';
 
 const GamingSection = ({ isGamingMode }) => {
@@ -21,7 +24,17 @@ const GamingSection = ({ isGamingMode }) => {
   const { library, isLoading: isLoadingLibrary, error: libraryError } = useSteamLibrary();
   const { library: xboxLibrary, isLoading: isLoadingXbox, error: xboxError } = useXboxLibrary();
 
-  if (!isGamingMode) return null;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // We intentionally DO NOT return null here anymore. 
+  // We keep the WebGL canvases mounted in the DOM but hidden via CSS.
+  // This allows the GPU to compile shaders in the background, eliminating lag.
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -47,8 +60,9 @@ const GamingSection = ({ isGamingMode }) => {
     { title: "Elden Ring", rank: "Completed", role: "Strength Build" }
   ];
 
-  // Use the live API data, otherwise fall back to hardcoded data
-  const displayGames = library.length > 0 ? library : fallbackGames;
+  // Use the live API data, otherwise fall back to hardcoded data, limited to top 12
+  const displayGames = (library.length > 0 ? library : fallbackGames).slice(0, 12);
+  const xboxGames = (xboxLibrary?.recentGames ? xboxLibrary.recentGames : []).slice(0, 12);
 
   const rigSpecs = [
     { icon: <Cpu size={24} />, name: "Ryzen 5 5600", label: "CPU" },
@@ -65,41 +79,55 @@ const GamingSection = ({ isGamingMode }) => {
     <motion.section 
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.1 }}
+      viewport={{ once: true, amount: 0 }}
       id="gaming"
       className="gaming-section"
-      style={{ position: 'relative', zIndex: 0, margin: '0 auto', width: '100%', boxSizing: 'border-box', marginTop: '-4vh', padding: '0 5vw' }}
+      style={{ 
+        position: isGamingMode ? 'relative' : 'absolute', 
+        opacity: isGamingMode ? 1 : 0,
+        pointerEvents: isGamingMode ? 'auto' : 'none',
+        visibility: isGamingMode ? 'visible' : 'hidden',
+        zIndex: 0, 
+        margin: '0 auto', 
+        width: '100%', 
+        boxSizing: 'border-box', 
+        marginTop: '-4vh', 
+        padding: '0 5vw',
+        transition: 'opacity 0.5s ease-in-out'
+      }}
     >
       
       <motion.div variants={textVariant()} style={{ width: '100%', textAlign: 'center' }}>
-        <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '3rem', color: '#fff', textShadow: '0 0 20px rgba(0,255,204,0.4)', fontSize: '2.5rem', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>The Battlestation</h2>
+        <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '3rem', color: '#fff', textShadow: '0 0 20px rgba(0,255,204,0.4)', fontSize: '2.5rem', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>
+          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
+            The Battlestation
+          </GradientText>
+        </h2>
       </motion.div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', maxWidth: '1200px', margin: '0 auto', alignItems: 'center' }}>
         
         {/* Top: 3D Player Card & Earth Globe */}
-        <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} style={{ width: '100%', minHeight: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6rem', flexWrap: 'wrap' }}>
+        <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
           <PlayerCard />
-          <div style={{ width: '500px', height: '500px', zIndex: 10, position: 'relative' }}>
+          <div className="earth-container" style={{ width: '100%', maxWidth: '500px', height: '400px', maxHeight: '500px', zIndex: 10, position: 'relative' }}>
             <EarthCanvas />
           </div>
         </motion.div>
 
         {/* 3D PlayCanvas Model Viewer moved to bottom */}
 
-        {/* Bottom: Dynamic Rig Card */}
-        <motion.div variants={fadeIn("up", "spring", 0.5, 0.75)} style={{ width: '100%', perspective: '1000px' }}>
-          <div 
-            ref={cardRef}
-            className="glass experience-card" 
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+        {/* Bottom: Static Rig Card */}
+        <motion.div variants={fadeIn("up", "spring", 0.5, 0.75)} style={{ width: '100%' }}>
+          <BorderGlow
+            animated={true}
+            glowColor="180 100 50" // Cyberpunk Cyan
+            colors={['#00ffcc', '#00f0ff', '#7a22ff']}
+            borderRadius={24}
+            className="experience-card" 
             style={{ 
               padding: '2.5rem',
-              transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-              transition: rotation.x === 0 && rotation.y === 0 ? 'transform 0.5s ease-out' : 'none',
               boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.05)',
-              border: '1px solid rgba(0, 255, 204, 0.3)',
               width: '100%',
               boxSizing: 'border-box'
             }}
@@ -121,7 +149,7 @@ const GamingSection = ({ isGamingMode }) => {
                 </div>
               ))}
             </div>
-          </div>
+          </BorderGlow>
         </motion.div>
       </div>
 
@@ -133,37 +161,65 @@ const GamingSection = ({ isGamingMode }) => {
         </motion.div>
 
 
-        <motion.h3 variants={textVariant()} style={{ fontSize: '1.8rem', marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          Steam Library (Top Played)
+        <motion.h3 variants={textVariant()} style={{ fontSize: '1.8rem', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5} className="left-align-gradient">
+            Steam Library (Top Played)
+          </GradientText>
           {isLoadingLibrary && <Loader2 size={24} className="animate-spin" color="var(--color-primary)" />}
         </motion.h3>
         
         {libraryError && <p style={{ color: 'red', fontStyle: 'italic' }}>Live data currently unavailable. Showing last known roster.</p>}
 
-        <div className="projects-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-          {displayGames.map((game, idx) => (
-            <SteamGameCard key={game.title} game={game} index={idx} />
-          ))}
+        <div style={{ width: '100%', margin: '2rem 0' }}>
+          <Carousel3D 
+            items={displayGames.map((game, idx) => <SteamGameCard key={game.appid || game.title} game={game} index={idx} />)}
+            duration={45} 
+            cardWidth={280} 
+            rotationDirection="left"
+          />
         </div>
 
         {/* Xbox Section */}
-        <motion.h3 variants={textVariant()} style={{ fontSize: '1.8rem', marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '1rem', color: '#107C10', textShadow: '0 0 20px rgba(16,124,16,0.4)' }}>
-          Xbox Live Activity
+        <motion.h3 variants={textVariant()} style={{ fontSize: '1.8rem', marginTop: '3rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', color: '#107C10', textShadow: '0 0 20px rgba(16,124,16,0.4)' }}>
+          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5} className="left-align-gradient">
+            Xbox Live Activity
+          </GradientText>
           {isLoadingXbox && <Loader2 size={24} className="animate-spin" color="#107C10" />}
         </motion.h3>
         
         {xboxError && <p style={{ color: 'red', fontStyle: 'italic' }}>Live data currently unavailable.</p>}
 
-        {xboxLibrary && xboxLibrary.recentGames && (
-          <div className="projects-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {xboxLibrary.recentGames.map((game, idx) => (
-              <XboxGameCard key={game.title} game={game} index={idx} />
-            ))}
+        {xboxGames.length > 0 && (
+          <div style={{ width: '100%', margin: '2rem 0' }}>
+            <Carousel3D 
+              items={xboxGames.map((game, idx) => <XboxGameCard key={game.title} game={game} index={idx} />)}
+              duration={40} 
+              cardWidth={280} 
+              rotationDirection="right"
+            />
           </div>
         )}
 
         {/* 3D PlayCanvas Model Viewer (Moved here) */}
-        <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '6rem' }}>
+        <motion.h3 
+          variants={textVariant()} 
+          style={{ 
+            fontSize: '2rem', 
+            marginTop: '4rem', 
+            textAlign: 'center', 
+            marginBottom: '1rem', 
+            color: '#fff', 
+            textShadow: '0 0 20px rgba(0,255,204,0.4)', 
+            fontWeight: 800, 
+            letterSpacing: '2px', 
+            textTransform: 'uppercase' 
+          }}
+        >
+          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
+            MY FAV
+          </GradientText>
+        </motion.h3>
+        <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
           <PlayCanvasViewer />
         </motion.div>
       </div>

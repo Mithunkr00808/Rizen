@@ -3,6 +3,8 @@ import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 import { Link as LinkIcon } from 'lucide-react';
 import './Section.css';
+import BorderGlow from './BorderGlow';
+import GradientText from './GradientText';
 
 // Framer Motion variant directly ported from the reference repo
 const fadeIn = (direction, type, delay, duration) => {
@@ -47,7 +49,11 @@ export default function Projects() {
   return (
     <section id="work" className="portfolio-section">
       <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
-        <h2 className="text-gradient section-title">Featured Work</h2>
+        <h2 className="section-title">
+          <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
+            Featured Work
+          </GradientText>
+        </h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '-1rem', marginBottom: '3rem', maxWidth: '600px', lineHeight: 1.6 }}>
           Following projects showcase my skills and experience through real-world examples of my work. Each project is briefly described with links to code repositories and live demos in it. It reflects my ability to solve complex problems, work with different technologies, and manage projects effectively.
         </p>
@@ -64,21 +70,19 @@ export default function Projects() {
             style={{ width: '100%', maxWidth: '360px' }}
           >
             <Tilt
-              glareEnable
               tiltEnable
               tiltMaxAngleX={30}
               tiltMaxAngleY={30}
-              glareColor="#ffffff"
               style={{ height: '100%' }}
             >
-              <div 
-                className="glass" 
+              <BorderGlow
+                animated={true}
+                glowColor="345 100 58" // matching --color-primary #ff2a5f
+                colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+                borderRadius={16}
                 style={{ 
-                  borderRadius: '16px', 
                   padding: '20px', 
-                  height: '100%',
-                  background: 'rgba(20, 20, 25, 0.6)', // bg-tertiary equivalent
-                  border: '1px solid rgba(255,255,255,0.05)'
+                  height: '100%'
                 }}
               >
                 {/* Image Container */}
@@ -126,7 +130,7 @@ export default function Projects() {
                     </p>
                   ))}
                 </div>
-              </div>
+              </BorderGlow>
             </Tilt>
           </motion.div>
         ))}

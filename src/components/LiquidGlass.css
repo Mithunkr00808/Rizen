@@ -3,7 +3,8 @@
   display: inline-flex;
   align-items: center;
   position: relative;
-  width: 340px;
+  width: 100%;
+  max-width: 340px;
   height: 70px;
   border-radius: 100px;
   cursor: pointer;
@@ -66,4 +67,23 @@
   0% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.15); }
   50% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 40px rgba(255, 255, 255, 0.3); }
   100% { box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.15); }
+}
+
+@media (max-width: 768px) {
+  .liquid-glass-toggle {
+    max-width: 90vw;
+    height: 60px;
+  }
+
+  .toggle-slider {
+    width: calc(50% - 10px);
+    height: 48px;
+    left: 5px;
+    top: 6px;
+  }
+
+  .toggle-label {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
 }

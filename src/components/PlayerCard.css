@@ -1,5 +1,7 @@
 .player-card-container {
-  height: 100%;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,6 +11,7 @@
   -webkit-user-select: none;
   -webkit-user-drag: none;
   touch-action: none;
+  padding: 2rem 0;
 }
 
 .player-card-container:active {
@@ -16,7 +19,8 @@
 }
 
 .player-card {
-  width: 380px;
+  width: 100%;
+  max-width: 380px;
   height: 560px;
   position: relative;
   transform-style: preserve-3d;
@@ -201,4 +205,14 @@
     transparent 8px
   );
   opacity: 0.8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .player-card {
+    width: 90vw;
+    max-width: 380px;
+    height: 140vw; /* Keep proportional height on mobile */
+    max-height: 560px;
+  }
 }

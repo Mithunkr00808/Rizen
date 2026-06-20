@@ -3,72 +3,69 @@ import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
 import { Gamepad2 } from 'lucide-react';
 import { fadeIn } from '../utils/motion';
+import BorderGlow from './BorderGlow';
 
 const XboxGameCard = ({ game, index }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div 
-      variants={fadeIn("up", "spring", index * 0.2, 0.75)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.1 }}
-    >
+    <motion.div style={{ width: '100%', height: '100%' }}>
       <Tilt
-        glareEnable
         tiltEnable
         tiltMaxAngleX={15}
         tiltMaxAngleY={15}
-        glareColor="#107C10" /* Xbox Green */
-        glarePosition="all"
-        glareBorderRadius="16px"
       >
-        <div 
-          className="glass project-card" 
+        <BorderGlow
+          animated={true}
+          glowColor="120 100 30" // Xbox Green 
+          colors={['#107C10', '#9bf00b', '#39ff14']}
+          borderRadius={16}
           style={{ 
-            padding: '1.25rem', 
+            padding: 0, 
             display: 'flex', 
-            alignItems: 'center', 
-            gap: '1rem',
+            flexDirection: 'column',
+            alignItems: 'stretch',
             cursor: 'pointer',
             marginBottom: 0,
             position: 'relative',
-            borderRadius: '16px',
-            background: isHovered ? 'rgba(16, 124, 16, 0.15)' : 'rgba(255,255,255,0.03)',
+            minHeight: '420px',
             transform: isHovered ? 'translateY(-5px) scale(1.02)' : 'translateY(0) scale(1)',
-            transition: 'all 0.3s ease',
-            border: isHovered ? '1px solid rgba(16, 124, 16, 0.5)' : '1px solid rgba(255, 255, 255, 0.05)'
+            transition: 'all 0.3s ease'
           }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
         >
-          {game.coverUrl ? (
-            <img src={game.coverUrl} alt={game.title} style={{ width: '56px', height: '56px', borderRadius: '12px', objectFit: 'cover' }} />
-          ) : (
-            <div style={{ width: '56px', height: '56px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Gamepad2 size={28} color="#107C10" />
-            </div>
-          )}
-          
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-            <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {game.title}
-            </h3>
+          <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}
+          >
+            {game.coverUrl ? (
+              <img src={game.coverUrl} alt={game.title} style={{ width: '100%', height: '280px', objectFit: 'cover', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} />
+            ) : (
+              <div style={{ width: '100%', height: '280px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+                <Gamepad2 size={48} color="#107C10" />
+              </div>
+            )}
             
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {game.gameScore && (
-                <span className="glass-badge" style={{ color: '#107C10', padding: '0.2rem 0.5rem', fontSize: '0.75rem' }}>
-                  {game.gameScore} G
-                </span>
-              )}
-              {game.lastPlayed && (
-                <span className="glass-badge" style={{ color: 'rgba(255,255,255,0.6)', padding: '0.2rem 0.5rem', fontSize: '0.75rem' }}>
-                  {game.lastPlayed}
-                </span>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '1.25rem' }}>
+              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', lineHeight: 1.2 }}>
+                {game.title}
+              </h3>
+              
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: 'auto' }}>
+                {game.gameScore && (
+                  <span className="glass-badge" style={{ color: '#107C10', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                    {game.gameScore} G
+                  </span>
+                )}
+                {game.lastPlayed && (
+                  <span className="glass-badge" style={{ color: 'rgba(255,255,255,0.6)', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
+                    {game.lastPlayed}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        </BorderGlow>
       </Tilt>
     </motion.div>
   );

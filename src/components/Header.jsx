@@ -12,11 +12,6 @@ export default function Header() {
         </div>
         
 
-        
-        <div className="nav-actions">
-          <button className="glass-button">Sign In</button>
-          <button className="glass-button primary">Get Started</button>
-        </div>
       </nav>
     </header>
   );

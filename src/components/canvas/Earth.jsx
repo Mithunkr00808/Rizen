@@ -94,3 +94,6 @@ const EarthCanvas = () => {
 };
 
 export default EarthCanvas;
+
+// Preload the heavy GLTF model immediately in the background on page load
+useGLTF.preload("/planet/scene.gltf");
