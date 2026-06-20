@@ -53,7 +53,7 @@ function App() {
   }, [isGamingMode]);
 
   return (
-    <div className="portfolio-container" style={{ position: 'relative' }}>
+    <div className="portfolio-container" style={{ position: 'relative', overflowX: 'hidden', width: '100%' }}>
       <SplashScreen />
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>

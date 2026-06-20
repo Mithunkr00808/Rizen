@@ -61,15 +61,15 @@ export default function ValorantCard() {
         ) : stats ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Top Section: Rank and Player Info */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <img 
                 src={stats.peakRankIcon || stats.rankIcon} 
                 alt={stats.peakRank} 
-                style={{ width: '120px', height: '120px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))' }} 
+                style={{ width: '90px', height: '90px', filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))' }} 
               />
               
-              <div style={{ flex: 1, minWidth: '200px' }}>
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', color: 'rgba(255,255,255,0.8)' }}>
+              <div style={{ flex: 1, minWidth: '180px' }}>
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', color: 'rgba(255,255,255,0.8)' }}>
                   {stats.riotId}
                 </h4>
                 
@@ -79,17 +79,15 @@ export default function ValorantCard() {
                       Peak Rank
                     </span>
                   </div>
-                  <span style={{ fontSize: '3rem', fontWeight: 900, color: 'white', lineHeight: 1 }}>
+                  <span style={{ fontSize: 'clamp(1.8rem, 6vw, 3rem)', fontWeight: 900, color: 'white', lineHeight: 1 }}>
                     {stats.peakRank}
                   </span>
                   
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
                       Current: {stats.rank}
                     </span>
-                    <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>
-                      |
-                    </span>
+                    <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>|</span>
                     <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>
                       {stats.rr} RR
                     </span>

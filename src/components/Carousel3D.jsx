@@ -9,6 +9,9 @@ export default function Carousel3D({
   itemClassName = "",
 }) {
   const n = items.length;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const effectiveCardWidth = isMobile ? Math.min(cardWidth, 200) : cardWidth;
+  const containerHeight = isMobile ? 320 : 450;
   
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -18,8 +21,8 @@ export default function Carousel3D({
   if (n === 0) return null;
 
   // Calculate the radius (translateZ) purely in JS for perfect cross-browser support
-  const gap = 20; // 20px gap between cards
-  const calculatedRadius = Math.max((cardWidth / 2 + gap) / Math.tan(Math.PI / n), cardWidth); // Ensure minimum radius
+  const gap = isMobile ? 10 : 20; // smaller gap on mobile
+  const calculatedRadius = Math.max((effectiveCardWidth / 2 + gap) / Math.tan(Math.PI / n), effectiveCardWidth); // Ensure minimum radius
   const radius = fixedRadius || calculatedRadius;
 
   const handlePointerDown = (e) => {
@@ -50,10 +53,11 @@ export default function Carousel3D({
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        minHeight: "450px",
+        minHeight: `${containerHeight}px`,
         perspective: perspective,
         cursor: isDragging ? "grabbing" : "grab",
-        touchAction: "none", // Prevent page scrolling while dragging
+        touchAction: "pan-y", // Allow vertical scroll, horizontal drag rotates
+        overflowX: "hidden",
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -64,8 +68,8 @@ export default function Carousel3D({
       <div
         style={{
           position: "relative",
-          width: `${cardWidth}px`,
-          height: "450px", // Increased to support ultra-tall portrait cards
+          width: `${effectiveCardWidth}px`,
+          height: `${containerHeight}px`,
           transformStyle: "preserve-3d",
           transform: `translateZ(-${radius}px) rotateY(${rotation}deg)`,
           transition: isDragging ? "none" : "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)",

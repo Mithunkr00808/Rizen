@@ -117,12 +117,21 @@
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .card-container {
-    width: 90vw;
-    left: 5vw;
+    width: 88vw;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
     min-height: auto;
   }
   
   .glass-card {
     padding: 24px;
+  }
+
+  .card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .card-content p {
+    font-size: 0.95rem;
   }
 }

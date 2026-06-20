@@ -98,7 +98,7 @@ const GamingSection = ({ isGamingMode }) => {
     >
       
       <motion.div variants={textVariant()} style={{ width: '100%', textAlign: 'center' }}>
-        <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '3rem', color: '#fff', textShadow: '0 0 20px rgba(0,255,204,0.4)', fontSize: '2.5rem', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>
+        <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '3rem', color: '#fff', textShadow: '0 0 20px rgba(0,255,204,0.4)', fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>
           <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
             The Battlestation
           </GradientText>
@@ -108,9 +108,9 @@ const GamingSection = ({ isGamingMode }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', maxWidth: '1200px', margin: '0 auto', alignItems: 'center' }}>
         
         {/* Top: 3D Player Card & Earth Globe */}
-        <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '2rem' }}>
           <PlayerCard />
-          <div className="earth-container" style={{ width: '100%', maxWidth: '500px', height: '400px', maxHeight: '500px', zIndex: 10, position: 'relative' }}>
+          <div className="earth-container" style={{ width: '100%', maxWidth: '400px', height: isMobile ? '250px' : '400px', maxHeight: '500px', zIndex: 10, position: 'relative' }}>
             <EarthCanvas />
           </div>
         </motion.div>
@@ -138,7 +138,7 @@ const GamingSection = ({ isGamingMode }) => {
               </h3>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.25rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.25rem' }}>
               {rigSpecs.map((spec, idx) => (
                 <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <div style={{ color: 'var(--color-primary)' }}>{spec.icon}</div>
