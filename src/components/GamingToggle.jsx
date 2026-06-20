@@ -4,10 +4,11 @@ import './LiquidGlass.css';
 
 export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY }) {
   const ref = useRef(null);
-  const [progress, setProgress] = useState(0); // Removing progress state to prevent React hook mismatch
+  const [progress, setProgress] = useState(0); 
+  const isAnimating = useRef(false); // Track manual taps to prevent race conditions!
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || isAnimating.current) return;
     const rect = ref.current.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     const isMobile = window.innerWidth <= 768;
@@ -15,8 +16,7 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     let currentProgress;
 
     if (isMobile) {
-      // On mobile: just evaluate position for the slider visual, but DO NOT auto-trigger.
-      // Auto-triggering conflicts with the manual tap handler.
+      // On mobile: trigger when the toggle is slightly above the middle of the screen
       const isVisible = rect.top < windowHeight && rect.bottom > 0;
       currentProgress = isVisible && rect.top < windowHeight * 0.65 ? 1 : 0;
     } else {
@@ -25,13 +25,13 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
       const endY = windowHeight * 0.10;
       const totalDistance = startY - endY;
       currentProgress = Math.max(0, Math.min(1, (startY - rect.top) / totalDistance));
+    }
 
-      // Automatically trigger the global mode shift when it crosses the center ONLY ON DESKTOP!
-      if (currentProgress > 0.5 && !isGamingMode) {
-        setIsGamingMode(true);
-      } else if (currentProgress <= 0.5 && isGamingMode) {
-        setIsGamingMode(false);
-      }
+    // Automatically trigger the global mode shift when it crosses the center!
+    if (currentProgress > 0.5 && !isGamingMode) {
+      setIsGamingMode(true);
+    } else if (currentProgress <= 0.5 && isGamingMode) {
+      setIsGamingMode(false);
     }
   }, [scrollY, isGamingMode, setIsGamingMode]);
 
@@ -43,8 +43,8 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Max X translation is 164px on desktop, 50% on mobile. Snap directly to 0 or that value.
-  const sliderX = isGamingMode ? (isMobile ? '50%' : '164px') : '0px';
+  // On mobile, the slider needs to translate by its full width (100%) plus the 10px inner gap to reach the other side perfectly.
+  const sliderX = isGamingMode ? (isMobile ? 'calc(100% + 10px)' : '164px') : '0px';
 
   // Blend colors dynamically based on state
   const sliderBg = isGamingMode 
@@ -52,16 +52,26 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     : 'linear-gradient(135deg, rgba(255, 42, 95, 0.8), rgba(122, 34, 255, 0.8))';
 
   const handleClick = () => {
-    if (isMobile) {
-      // On mobile, directly toggle the mode — the scroll-based detection can be unreliable
-      setIsGamingMode(prev => !prev);
-    } else {
+    // Lock the auto-trigger so it doesn't instantly revert our state!
+    isAnimating.current = true;
+    
+    // 1. Instantly flip the state to render the GamingSection
+    setIsGamingMode(prev => !prev);
+    
+    // 2. Give the DOM a tiny fraction of a second to render the massive new section, 
+    // then smoothly scroll down into it!
+    setTimeout(() => {
       if (!isGamingMode) {
         window.scrollBy({ top: 300, behavior: 'smooth' });
       } else {
         window.scrollBy({ top: -300, behavior: 'smooth' });
       }
-    }
+      
+      // Unlock the auto-trigger after the smooth scroll finishes
+      setTimeout(() => {
+        isAnimating.current = false;
+      }, 800);
+    }, 50);
   };
 
   return (
@@ -72,14 +82,7 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
         onClick={handleClick}
         className="liquid-glass-toggle"
       >
-        <div 
-          className="toggle-slider" 
-          style={{ 
-            transform: `translateX(${sliderX})`,
-            background: sliderBg,
-            transition: 'background 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)'
-          }} 
-        />
+        <div className={`toggle-slider ${isGamingMode ? 'gaming' : 'work'}`} />
         <div className="toggle-label" style={{ color: !isGamingMode ? '#fff' : 'rgba(255,255,255,0.6)' }}>WORK</div>
         <div className="toggle-label" style={{ color: isGamingMode ? '#fff' : 'rgba(255,255,255,0.6)' }}>GAMING</div>
       </div>

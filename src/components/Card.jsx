@@ -59,9 +59,24 @@ export default function Card({ scrollY = 0 }) {
   const cardScale = 1 + scrollY * 0.002; // Expands slightly
   const pointerEvents = cardOpacity > 0 ? 'auto' : 'none';
 
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const transformStyle = isMobile 
+    ? `translate(-50%, calc(0% + ${parallaxY}px))` // Removed negative vertical translation so it sits below the sphere
+    : `translateY(calc(-50% + ${parallaxY}px))`; // Left-aligned on desktop
+    
+  // Push it further down on mobile to make room for the 3D sphere above it!
+  const topStyle = isMobile ? '70vh' : '50%';
+
   return (
     <div className="card-container" style={{
-      transform: `translateY(calc(-50% + ${parallaxY}px))`,
+      top: topStyle,
+      transform: transformStyle,
       pointerEvents: pointerEvents,
       transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
     }}>
@@ -87,7 +102,7 @@ export default function Card({ scrollY = 0 }) {
         >
           {/* Dedicated background layer for the glass effect to prevent 3D flattening bugs */}
           <div className="glass" style={{ position: 'absolute', inset: 0, borderRadius: '24px', zIndex: 0, transform: 'translateZ(0)' }} />
-          
+
           <div className="card-content" style={{ position: 'relative', zIndex: 1 }}>
             <div className="card-icon">✧</div>
             <h3>MITHUN KR</h3>

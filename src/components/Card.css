@@ -1,9 +1,9 @@
 .card-container {
   position: fixed;
-  left: 25vw;
+  left: 28vw;
   top: 50%;
   transform: translateY(-50%);
-  width: 460px;
+  width: 600px;
   min-height: 460px;
   height: auto;
   z-index: 10;

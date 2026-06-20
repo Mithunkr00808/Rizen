@@ -9,7 +9,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
   let scale = 1;
   let opacity = 1;
   let yOffset = scrollY * 0.15;
-  
+
   if (scrollY < zoomThreshold) {
     // Zoom IN slowly during the intro and Experience section
     scale = 1 + scrollY * 0.0005;
@@ -17,16 +17,23 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
     // Zoom OUT aggressively after the Experience section
     const maxScale = 1 + zoomThreshold * 0.0005;
     const scrollPast = scrollY - zoomThreshold;
-    
+
     // Shrink down until it completely vanishes
     scale = Math.max(0, maxScale - scrollPast * 0.0015);
-    
+
     // Fade out the transparency so it dissolves into the black background
     opacity = Math.max(0, 1 - scrollPast * 0.002);
   }
-  
-  const parallaxTransform = `translateX(-25vw) translateY(${yOffset}px) scale(${scale})`;
-  
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  // Use percentages instead of vw to avoid scrollbar width throwing off the mathematical center!
+  // On Desktop: Shift canvas so sphere rests beautifully on the right side, but close to the center (-16%).
+  // On Mobile: Keep canvas pulled heavily left to mathematically perfectly center the sphere (-25%).
+  const parallaxTransform = isMobile
+    ? `translateX(-25%) translateY(calc(-15vh + ${yOffset}px)) scale(${scale})`
+    : `translateX(-16%) translateY(${yOffset}px) scale(${scale})`;
+
   // 300deg = Hot Pink (Office), 180deg = Cyan (Gaming)
   const hueRotation = isGamingMode ? '180deg' : '300deg';
 
@@ -46,7 +53,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 0, background: 'transparent', overflow: 'hidden' }}>
-      
+
 
       {/* Dark gaming background layer */}
       <div style={{
@@ -70,7 +77,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
         top: 0,
         left: 0
       }}>
-        <Spline 
+        <Spline
           scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
           onLoad={() => {
             // Force a slight delay so the browser registers the opacity: 0 state first
@@ -78,7 +85,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
             setTimeout(() => setIsLoaded(true), 100);
           }}
           style={{
-            width: '150vw',
+            width: '150%',
             height: '100vh',
             transform: parallaxTransform,
             mixBlendMode: 'screen',

@@ -30,8 +30,17 @@ export default function ScrollSection({ scrollY, children, offsetMultiplier = 0.
     ref.current.style.transform = `translateY(${translateY}px)`;
   }, [scrollY, offsetMultiplier]);
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
   return (
-    <div ref={ref} style={{ opacity: 0, transform: 'translateY(100px)', transition: 'opacity 0.1s ease-out, transform 0.1s ease-out' }}>
+    <div 
+      ref={ref} 
+      style={{ 
+        opacity: isMobile ? 1 : 0, 
+        transform: isMobile ? 'translateY(0)' : 'translateY(100px)', 
+        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out' 
+      }}
+    >
       {children}
     </div>
   );

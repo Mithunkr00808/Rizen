@@ -82,6 +82,11 @@
     top: 6px;
   }
 
+  .toggle-slider.gaming {
+    /* Translate the slider by its full width + the inner gap to perfectly snap to the right edge */
+    transform: translateX(calc(100% + 10px));
+  }
+
   .toggle-label {
     font-size: 0.9rem;
     letter-spacing: 1px;
