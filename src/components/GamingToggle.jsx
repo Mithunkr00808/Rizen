@@ -15,21 +15,25 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     let currentProgress;
 
     if (isMobile) {
-      // On mobile: just track visibility for potential animations, but don't auto-toggle
+      // On mobile: just evaluate position for the slider visual, but DO NOT auto-trigger.
+      // Auto-triggering conflicts with the manual tap handler.
       const isVisible = rect.top < windowHeight && rect.bottom > 0;
       currentProgress = isVisible && rect.top < windowHeight * 0.65 ? 1 : 0;
     } else {
-      // Desktop: calculate progress for animations if needed
+      // Desktop: start sliding when it reaches 70% from the bottom, done at 10% from top
       const startY = windowHeight * 0.70;
       const endY = windowHeight * 0.10;
       const totalDistance = startY - endY;
       currentProgress = Math.max(0, Math.min(1, (startY - rect.top) / totalDistance));
+
+      // Automatically trigger the global mode shift when it crosses the center ONLY ON DESKTOP!
+      if (currentProgress > 0.5 && !isGamingMode) {
+        setIsGamingMode(true);
+      } else if (currentProgress <= 0.5 && isGamingMode) {
+        setIsGamingMode(false);
+      }
     }
-    
-    // We intentionally removed the automatic setIsGamingMode trigger here
-    // because it was causing infinite loops and scroll jumping on mobile devices.
-    // The mode is now exclusively controlled by clicking the toggle!
-  }, [scrollY]);
+  }, [scrollY, isGamingMode, setIsGamingMode]);
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
 
@@ -61,7 +65,7 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
   };
 
   return (
-    <div ref={ref} style={{ textAlign: 'center', margin: '-4vh auto 0 auto', width: '100%', position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div ref={ref} style={{ textAlign: 'center', margin: '-4vh auto 0 auto', width: '100%', position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', pointerEvents: 'auto' }}>
       <h2 className="text-gradient" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', marginBottom: '2rem' }}>Ready for player two?</h2>
       
       <div 

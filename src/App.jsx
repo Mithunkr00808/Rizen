@@ -64,8 +64,8 @@ function App() {
       <Header />
       
       {/* Portfolio Content Sections below the fold */}
-      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', position: 'relative', zIndex: 10 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8vh' }}>
+      <div style={{ paddingTop: '110vh', display: 'flex', flexDirection: 'column', gap: '8vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8vh', pointerEvents: 'none' }}>
           <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
             <Experience />
           </ScrollSection>
