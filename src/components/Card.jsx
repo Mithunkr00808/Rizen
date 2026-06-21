@@ -72,7 +72,7 @@ export default function Card({ scrollY = 0 }) {
     
   // Center the container vertically. We push it slightly above dead center (45%) 
   // so it looks visually balanced with the header, and removes the massive top gap.
-  const topStyle = isMobile ? '45%' : '48%';
+  const topStyle = isMobile ? '30%' : '35%';
 
   return (
     <div className="card-container" style={{

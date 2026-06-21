@@ -30,6 +30,13 @@ function App() {
   const [isGamingMode, setIsGamingMode] = useState(false);
 
   useEffect(() => {
+    // Prevent browser from automatically restoring scroll position on refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    // Force scroll to top on initial load so hero section is always sharp
+    window.scrollTo(0, 0);
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -64,7 +71,7 @@ function App() {
       <Header />
       
       {/* Portfolio Content Sections below the fold */}
-      <div style={{ paddingTop: '70vh', display: 'flex', flexDirection: 'column', gap: '4vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+      <div style={{ paddingTop: '55vh', display: 'flex', flexDirection: 'column', gap: '4vh', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4vh', pointerEvents: 'none' }}>
           <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
             <Experience />
