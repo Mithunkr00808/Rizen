@@ -200,7 +200,28 @@ const GamingSection = ({ isGamingMode }) => {
           </div>
         )}
 
-        {/* Removed MY FAV section per user request */}
+        {/* 3D PlayCanvas Model Viewer (Moved here) */}
+        <motion.h3 
+          variants={textVariant()} 
+          style={{ 
+            fontSize: '2rem', 
+            marginTop: '4rem', 
+            textAlign: 'center', 
+            marginBottom: '1rem', 
+            color: '#fff', 
+            textShadow: '0 0 20px rgba(0,255,204,0.4)', 
+            fontWeight: 800, 
+            letterSpacing: '2px', 
+            textTransform: 'uppercase' 
+          }}
+        >
+          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
+            MY FAV
+          </GradientText>
+        </motion.h3>
+        <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
+          {isGamingMode && <PlayCanvasViewer />}
+        </motion.div>
       </div>
       <style>{`
         @keyframes fadeIn {
