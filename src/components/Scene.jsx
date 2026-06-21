@@ -27,11 +27,13 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
-  // Use percentages instead of vw to avoid scrollbar width throwing off the mathematical center!
-  // On Desktop: Shift canvas so sphere rests beautifully on the right side, but close to the center (-16%).
-  // On Mobile: Keep canvas pulled heavily left to mathematically perfectly center the sphere (-25%).
+  // On mobile: Make it 30% smaller, start it higher up, and make it scroll UP and AWAY as the user scrolls down!
+  // This prevents the bright sphere from overlapping and hiding the text of the Work cards.
+  const mobileScale = scale * 0.7; 
+  const mobileYOffset = -scrollY * 0.2; 
+
   const parallaxTransform = isMobile
-    ? `translateX(-25%) translateY(calc(-15vh + ${yOffset}px)) scale(${scale})`
+    ? `translateX(-20%) translateY(calc(-20vh + ${mobileYOffset}px)) scale(${mobileScale})`
     : `translateX(-16%) translateY(${yOffset}px) scale(${scale})`;
 
   // 300deg = Hot Pink (Office), 180deg = Cyan (Gaming)
