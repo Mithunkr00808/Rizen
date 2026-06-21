@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import EarthCanvas from './canvas/Earth';
 import './Card.css';
 
 export default function Card({ scrollY = 0 }) {
@@ -83,7 +82,9 @@ export default function Card({ scrollY = 0 }) {
     }}>
 
       {/* The Main Card */}
-      <div className="glass-card-wrapper" style={{
+      <div style={{
+        width: '100%', // DO NOT REMOVE: Prevents flex container collapse
+        height: '100%', // DO NOT REMOVE: Prevents flex container collapse
         opacity: cardOpacity,
         filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
         transform: `scale(${cardScale})`,
@@ -110,22 +111,6 @@ export default function Card({ scrollY = 0 }) {
             <p>Specializing in Healthcare tech, including HL7, EDI, and PACS Integration.</p>
           </div>
         </div>
-      </div>
-
-      {/* The Earth Globe (placed to the right) */}
-      <div className="hero-earth" style={{
-        width: isMobile ? '100%' : '500px',
-        height: isMobile ? '350px' : '500px',
-        opacity: cardOpacity,
-        filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
-        transform: `scale(${cardScale})`,
-        transition: 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
-        pointerEvents: pointerEvents,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <EarthCanvas />
       </div>
 
       {/* The Particles */}
