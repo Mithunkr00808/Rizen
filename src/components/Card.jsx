@@ -77,16 +77,14 @@ export default function Card({ scrollY = 0 }) {
     <div className="card-container" style={{
       top: topStyle,
       transform: transformStyle,
-      pointerEvents: pointerEvents,
-      transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
+      pointerEvents: pointerEvents
     }}>
 
       {/* The Main Card */}
       <div className="glass-card-wrapper" style={{
         opacity: cardOpacity,
         filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
-        transform: `scale(${cardScale})`,
-        transition: 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
+        transform: `scale(${cardScale})`
       }}>
         <div
           ref={cardRef}
@@ -116,9 +114,7 @@ export default function Card({ scrollY = 0 }) {
         width: isMobile ? '100%' : '500px',
         height: isMobile ? '350px' : '500px',
         opacity: cardOpacity,
-        filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
         transform: `scale(${cardScale})`,
-        transition: 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
         pointerEvents: pointerEvents,
         display: 'flex',
         justifyContent: 'center',
