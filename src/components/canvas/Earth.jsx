@@ -1,4 +1,4 @@
-import { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useRef, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Preload, useGLTF } from "@react-three/drei";
 
@@ -96,7 +96,7 @@ const EarthCanvas = () => {
   );
 };
 
-export default EarthCanvas;
+export default React.memo(EarthCanvas);
 
 // Preload the heavy GLTF model immediately in the background on page load
 useGLTF.preload("/planet/scene.gltf");
