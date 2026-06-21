@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import './Section.css';
 import BorderGlow from './BorderGlow';
 import GradientText from './GradientText';
+
 
 const fadeIn = (direction, type, delay, duration) => {
   return {
@@ -26,29 +27,9 @@ const fadeIn = (direction, type, delay, duration) => {
 };
 
 const Experience = () => {
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) setHasScrolled(true);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <section 
-      id="experience" 
-      className="portfolio-section"
-      style={{ 
-        opacity: hasScrolled ? 1 : 0, 
-        transform: hasScrolled ? 'translateY(0)' : 'translateY(40px)',
-        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-        pointerEvents: hasScrolled ? 'auto' : 'none'
-      }}
-    >
-      <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, margin: "0px 0px -150px 0px" }}>
+    <section id="experience" className="portfolio-section">
+      <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
         <h2 className="section-title">
           <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
             Experience
@@ -62,7 +43,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.3, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
+        viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
           animated={true}
@@ -93,7 +74,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.5, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
+        viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
           animated={true}
@@ -128,7 +109,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.7, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
+        viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
           animated={true}

@@ -1,6 +1,7 @@
 .card-container {
   position: relative;
   width: 100%;
+  min-height: 85vh;
   padding: 120px 5vw 0 5vw;
   margin: 0 auto;
   max-width: 1400px;
@@ -129,9 +130,8 @@
   .card-container {
     width: 100%;
     min-height: auto;
-    padding: 100px 5vw 0 5vw;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2rem;
   }
   
   .glass-card-wrapper {
