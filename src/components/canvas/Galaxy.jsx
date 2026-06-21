@@ -16,11 +16,12 @@ const GalaxyParticles = () => {
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = Math.random() * 7;
+      const radius = Math.random() * 4.5; // Condensed further to prevent edge clipping
       const spinAngle = radius * 1.2;
       const branchAngle = ((i % 4) / 4) * Math.PI * 2;
 
-      const randomness = 0.8;
+      // Reduced randomness to prevent dust particles from shooting outside the canvas bounding box
+      const randomness = 0.4;
       const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * randomness * radius;
       const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * randomness * radius;
       const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * randomness * radius;
@@ -30,7 +31,7 @@ const GalaxyParticles = () => {
       pos[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
       const mixedColor = colorInside.clone();
-      mixedColor.lerp(colorOutside, radius / 7);
+      mixedColor.lerp(colorOutside, radius / 4.5);
       col[i3] = mixedColor.r;
       col[i3 + 1] = mixedColor.g;
       col[i3 + 2] = mixedColor.b;
