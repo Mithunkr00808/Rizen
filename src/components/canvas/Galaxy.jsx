@@ -71,7 +71,6 @@ const GalaxyCanvas = () => {
         <GalaxyParticles />
       </Canvas>
     </div>
-  );
 };
 
 export default React.memo(GalaxyCanvas);

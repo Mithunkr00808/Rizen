@@ -220,7 +220,7 @@ const GamingSection = ({ isGamingMode }) => {
           </GradientText>
         </motion.h3>
         <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
-          {isGamingMode && <PlayCanvasViewer />}
+          <PlayCanvasViewer />
         </motion.div>
       </div>
       <style>{`
