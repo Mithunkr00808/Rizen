@@ -69,7 +69,7 @@ const Card = () => {
       <div className="hero-earth" style={{
         width: '100%',
         maxWidth: isMobile ? '100%' : '800px', // Pushed even wider to 800px
-        height: isMobile ? '450px' : '800px',  // Match height to keep canvas aspect ratio square
+        height: isMobile ? '300px' : '800px',  // Match height to keep canvas aspect ratio square
         flex: '1 1 500px', // Pushed flex basis to dominate horizontal space
         display: 'flex',
         justifyContent: 'center',
