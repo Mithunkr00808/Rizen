@@ -33,8 +33,8 @@ export default function Card({ scrollY = 0 }) {
   const transformStyle = `translate(-50%, -50%)`;
     
   // Center the container vertically. We push it slightly above dead center (45%) 
-  // so it looks visually balanced with the header, and removes the massive top gap.
-  const topStyle = isMobile ? '30%' : '35%';
+  // Center the container vertically within the viewport (not the entire document)
+  const topStyle = isMobile ? '30vh' : '35vh';
 
   return (
     <motion.div 
