@@ -31,23 +31,16 @@ export default function ScrollSection({ scrollY, children, offsetMultiplier = 0.
   }, [scrollY, offsetMultiplier]);
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const isFirstRender = useRef(true);
-
-  // Set initial styles only once!
-  const initialStyle = isFirstRender.current ? {
-    opacity: isMobile ? 1 : 0, 
-    transform: isMobile ? 'translateY(0)' : 'translateY(100px)', 
-    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out' 
-  } : {
-    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out'
-  };
-
-  useEffect(() => {
-    isFirstRender.current = false;
-  }, []);
 
   return (
-    <div ref={ref} style={initialStyle}>
+    <div 
+      ref={ref} 
+      style={{ 
+        opacity: isMobile ? 1 : 0, 
+        transform: isMobile ? 'translateY(0)' : 'translateY(100px)', 
+        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out' 
+      }}
+    >
       {children}
     </div>
   );
