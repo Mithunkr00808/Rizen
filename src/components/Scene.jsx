@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Spline from '@splinetool/react-spline';
 
 export default function Scene({ scrollY = 0, isGamingMode = false }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -39,16 +38,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
   // 300deg = Hot Pink (Office), 180deg = Cyan (Gaming)
   const hueRotation = isGamingMode ? '180deg' : '300deg';
 
-  // Intercept the wheel event before it reaches the Spline canvas.
-  // 3D libraries often capture mouse wheel events (for zooming) and call e.preventDefault(),
-  // which breaks page scrolling. By stopping propagation here, the browser scrolls normally!
-  useEffect(() => {
-    const allowScroll = (e) => {
-      e.stopPropagation();
-    };
-    window.addEventListener('wheel', allowScroll, { capture: true, passive: true });
-    return () => window.removeEventListener('wheel', allowScroll, { capture: true });
-  }, []);
+  // Cleaned up Spline wheel interceptor
 
   // Smoothly blend background based on gaming mode!
   const bgOpacity = isGamingMode ? Math.min(1, scrollY / 500) : 0;
@@ -67,9 +57,6 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
         transition: 'background 0.5s ease'
       }} />
 
-
-
-      {/* Spline Sphere Removed per user request */}
     </div>
   );
 }

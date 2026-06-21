@@ -20,19 +20,9 @@ export default function Card({ scrollY = 0 }) {
   }, []);
 
   useEffect(() => {
-    const stopSpline = (e) => {
-      if (cardRef.current && cardRef.current.contains(e.target)) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }
-    };
-
-    window.addEventListener('mousemove', stopSpline, true);
-    window.addEventListener('pointermove', stopSpline, true);
-
+    // Component mounted
     return () => {
-      window.removeEventListener('mousemove', stopSpline, true);
-      window.removeEventListener('pointermove', stopSpline, true);
+      // Component unmounted
     };
   }, []);
 
