@@ -10,8 +10,11 @@ export default function ScrollSection({ scrollY, children, offsetMultiplier = 0.
 
     // On mobile, skip the parallax entirely — elements just appear naturally
     if (isMobile) {
-      ref.current.style.opacity = 1;
-      ref.current.style.transform = 'translateY(0px)';
+      // ONLY update the DOM if it hasn't been set yet to prevent style invalidation spam on every scroll tick!
+      if (ref.current.style.opacity !== '1') {
+        ref.current.style.opacity = 1;
+        ref.current.style.transform = 'translateY(0px)';
+      }
       return;
     }
 
