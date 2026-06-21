@@ -69,34 +69,7 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
 
 
 
-      {/* Animated Wrapper for Spline */}
-      <div style={{
-        width: '100%',
-        height: '100%',
-        opacity: isLoaded ? opacity : 0,
-        transition: 'opacity 2.5s ease-in-out',
-        position: 'absolute',
-        top: 0,
-        left: 0
-      }}>
-        <Spline
-          scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
-          onLoad={() => {
-            // Force a slight delay so the browser registers the opacity: 0 state first
-            // allowing the CSS transition to fully trigger
-            setTimeout(() => setIsLoaded(true), 100);
-          }}
-          style={{
-            width: '150%',
-            height: '100vh',
-            transform: parallaxTransform,
-            // Disable lethal GPU blending and filtering on mobile to fix stuttering
-            mixBlendMode: isMobile ? 'normal' : 'screen',
-            filter: isMobile ? 'none' : `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.6)`,
-            transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease-in-out'
-          }}
-        />
-      </div>
+      {/* Spline Sphere Removed per user request */}
     </div>
   );
 }
