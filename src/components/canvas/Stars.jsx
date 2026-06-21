@@ -5,10 +5,15 @@ import * as random from "maath/random/dist/maath-random.esm";
 
 const Stars = (props) => {
   const ref = useRef();
-  const [sphere] = useState(() => random.inSphere(new Float32Array(5001), { radius: 1.2 }));
+  
+  // Detect mobile and drastically reduce particle count
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const numStars = isMobile ? 500 : 1600; // 500 points on mobile, 1600 on desktop
+  const [sphere] = useState(() => random.inSphere(new Float32Array(numStars * 3), { radius: 1.2 }));
 
   useFrame((state, delta) => {
-    if (ref.current) {
+    // Completely pause the animation loop on mobile to save GPU cycles
+    if (ref.current && !isMobile) {
       ref.current.rotation.x -= delta / 10;
       ref.current.rotation.y -= delta / 15;
     }
