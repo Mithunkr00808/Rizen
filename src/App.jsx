@@ -57,6 +57,7 @@ function App() {
       <SplashScreen />
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>
       </div>
       <Scene scrollY={scrollY} isGamingMode={isGamingMode} />
       <Card scrollY={scrollY} />
