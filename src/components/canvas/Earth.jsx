@@ -66,6 +66,8 @@ const EarthCanvas = () => {
     };
   }, []);
 
+  const dpr = typeof window !== 'undefined' && window.innerWidth <= 768 ? [1, 1] : [1, 2];
+
   return (
     <div
       ref={containerRef}
@@ -80,6 +82,7 @@ const EarthCanvas = () => {
       <Canvas
         camera={{ fov: 45, near: 0.1, far: 200, position: [-4, 3, 6] }}
         gl={{ preserveDrawingBuffer: true }}
+        dpr={dpr}
         style={{ pointerEvents: "none" }}
       >
         <ambientLight intensity={0.6} />

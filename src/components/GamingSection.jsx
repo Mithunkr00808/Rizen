@@ -32,9 +32,7 @@ const GamingSection = ({ isGamingMode }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // We intentionally DO NOT return null here anymore. 
-  // We keep the WebGL canvases mounted in the DOM but hidden via CSS.
-  // This allows the GPU to compile shaders in the background, eliminating lag.
+  // Unmounting WebGL canvases when not in Gaming Mode to save mobile GPU memory!
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -111,7 +109,7 @@ const GamingSection = ({ isGamingMode }) => {
         <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '2rem' }}>
           <PlayerCard />
           <div className="earth-container" style={{ width: '100%', maxWidth: '400px', height: isMobile ? '250px' : '400px', maxHeight: '500px', zIndex: 10, position: 'relative', transform: isMobile ? 'none' : 'translateX(40px)' }}>
-            <EarthCanvas />
+            {isGamingMode && <EarthCanvas />}
           </div>
         </motion.div>
 
@@ -220,7 +218,7 @@ const GamingSection = ({ isGamingMode }) => {
           </GradientText>
         </motion.h3>
         <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
-          <PlayCanvasViewer />
+          {isGamingMode && <PlayCanvasViewer />}
         </motion.div>
       </div>
       <style>{`
