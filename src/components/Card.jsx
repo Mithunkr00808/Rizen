@@ -111,8 +111,10 @@ export default function Card({ scrollY = 0 }) {
 
       {/* The Earth Globe (placed to the right) */}
       <div className="hero-earth" style={{
-        width: isMobile ? '100%' : '500px',
+        width: '100%',
+        maxWidth: isMobile ? '100%' : '500px',
         height: isMobile ? '350px' : '500px',
+        flex: '1 1 300px',
         opacity: cardOpacity,
         pointerEvents: pointerEvents,
         display: 'flex',

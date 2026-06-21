@@ -3,10 +3,14 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: auto; /* Let flex handle width */
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 5vw;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap; /* Allows stacking on mid-sized screens if needed */
   gap: 4vw;
   z-index: 10;
   perspective: 1000px;
@@ -14,9 +18,11 @@
 }
 
 .glass-card-wrapper {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   min-height: 460px;
   height: auto;
+  flex: 1 1 400px; /* Scale down on smaller screens */
 }
 
 .glass-card {
