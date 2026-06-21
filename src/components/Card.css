@@ -10,7 +10,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* Allows stacking on mid-sized screens if needed */
   gap: 4vw;
   z-index: 10;
   perspective: 1000px;
