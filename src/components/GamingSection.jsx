@@ -108,9 +108,10 @@ const GamingSection = ({ isGamingMode }) => {
         {/* Top: 3D Player Card & Earth Globe */}
         <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '2rem' }}>
           <PlayerCard />
-          <div className="earth-container" style={{ width: '100%', maxWidth: '400px', height: isMobile ? '250px' : '400px', maxHeight: '500px', zIndex: 10, position: 'relative', transform: isMobile ? 'none' : 'translateX(40px)' }}>
+          {/* Temporarily disabled Earth Globe for performance testing */}
+          {/* <div className="earth-container" style={{ width: '100%', maxWidth: '400px', height: isMobile ? '250px' : '400px', maxHeight: '500px', zIndex: 10, position: 'relative', transform: isMobile ? 'none' : 'translateX(40px)' }}>
             {isGamingMode && <EarthCanvas />}
-          </div>
+          </div> */}
         </motion.div>
 
         {/* 3D PlayCanvas Model Viewer moved to bottom */}
