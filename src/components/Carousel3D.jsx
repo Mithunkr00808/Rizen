@@ -57,7 +57,7 @@ export default function Carousel3D({
         perspective: perspective,
         cursor: isDragging ? "grabbing" : "grab",
         touchAction: "pan-y", // Allow vertical scroll, horizontal drag rotates
-        overflowX: "hidden",
+        overflow: "visible",
       }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}

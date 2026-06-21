@@ -38,6 +38,33 @@ const XboxGameCard = ({ game, index }) => {
             onMouseLeave={() => setIsHovered(false)}
             style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}
           >
+            {isHovered && game.gameAch && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10, x: "-50%" }}
+                animate={{ opacity: 1, y: -10, x: "-50%" }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="glass"
+                style={{
+                  position: 'absolute',
+                  bottom: '100%',
+                  left: '50%',
+                  zIndex: 50,
+                  width: '200px',
+                  padding: '1rem',
+                  borderRadius: '16px',
+                  pointerEvents: 'none',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.8)',
+                  textAlign: 'center'
+                }}
+              >
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: '#107C10', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Achievements
+                </h4>
+                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'white' }}>
+                  {game.gameAch}
+                </div>
+              </motion.div>
+            )}
             {game.coverUrl ? (
               <img src={game.coverUrl} alt={game.title} style={{ width: '100%', height: '280px', objectFit: 'cover', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} />
             ) : (

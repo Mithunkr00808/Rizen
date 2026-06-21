@@ -16,7 +16,7 @@ const GalaxyParticles = () => {
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = Math.random() * 4.5; // Condensed further to prevent edge clipping
+      const radius = Math.random() * 9; // Increased radius heavily
       const spinAngle = radius * 1.2;
       const branchAngle = ((i % 4) / 4) * Math.PI * 2;
 
@@ -31,7 +31,7 @@ const GalaxyParticles = () => {
       pos[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
       const mixedColor = colorInside.clone();
-      mixedColor.lerp(colorOutside, radius / 4.5);
+      mixedColor.lerp(colorOutside, radius / 9);
       col[i3] = mixedColor.r;
       col[i3 + 1] = mixedColor.g;
       col[i3 + 2] = mixedColor.b;
@@ -66,7 +66,7 @@ const GalaxyParticles = () => {
 const GalaxyCanvas = () => {
   return (
     <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
-      <Canvas camera={{ position: [0, 8, 12], fov: 75 }} gl={{ antialias: true }}>
+      <Canvas camera={{ position: [0, 14, 21], fov: 75 }} gl={{ antialias: true }}>
         <OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} />
         <GalaxyParticles />
       </Canvas>
