@@ -70,8 +70,9 @@ export default function Card({ scrollY = 0 }) {
   // Both mobile and desktop should simply use a centered transform, as the container will be placed at left: 50%
   const transformStyle = `translate(-50%, calc(-50% + ${parallaxY}px))`;
     
-  // Push it further down on mobile to make room for the 3D sphere above it!
-  const topStyle = isMobile ? '65vh' : '50%';
+  // Center the container vertically. We push it slightly above dead center (45%) 
+  // so it looks visually balanced with the header, and removes the massive top gap.
+  const topStyle = isMobile ? '45%' : '48%';
 
   return (
     <div className="card-container" style={{
