@@ -14,7 +14,7 @@ const RotatingEarth = ({ rotation }) => {
   });
 
   const { scene } = useGLTF("/planet/scene.gltf");
-  return <primitive ref={earthRef} object={scene} scale={3.2} />;
+  return <primitive ref={earthRef} object={scene} scale={2.4} />;
 };
 
 const EarthCanvas = () => {
