@@ -6,9 +6,9 @@ import * as THREE from 'three';
 const GalaxyParticles = ({ isVisible }) => {
   const pointsRef = useRef();
   
-  // Drop particle count by 80% on mobile to save GPU!
+  // Drop particle count drastically on mobile to save GPU!
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const count = isMobile ? 10000 : 50000;
+  const count = isMobile ? 3000 : 50000;
   
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
