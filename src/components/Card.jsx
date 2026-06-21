@@ -67,12 +67,11 @@ export default function Card({ scrollY = 0 }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const transformStyle = isMobile 
-    ? `translate(-50%, calc(0% + ${parallaxY}px))` // Removed negative vertical translation so it sits below the sphere
-    : `translateY(calc(-50% + ${parallaxY}px))`; // Left-aligned on desktop
+  // Both mobile and desktop should simply use a centered transform, as the container will be placed at left: 50%
+  const transformStyle = `translate(-50%, calc(-50% + ${parallaxY}px))`;
     
   // Push it further down on mobile to make room for the 3D sphere above it!
-  const topStyle = isMobile ? '70vh' : '50%';
+  const topStyle = isMobile ? '65vh' : '50%';
 
   return (
     <div className="card-container" style={{

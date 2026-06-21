@@ -1,12 +1,13 @@
 .card-container {
   position: fixed;
-  left: 15vw; /* Adjusted left to make room for Earth */
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   width: auto; /* Let flex handle width */
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 4rem;
+  gap: 4vw;
   z-index: 10;
   perspective: 1000px;
   pointer-events: none;

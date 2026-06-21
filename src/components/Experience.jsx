@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import './Section.css';
 import BorderGlow from './BorderGlow';
 import GradientText from './GradientText';
-import EarthCanvas from './canvas/Earth';
+
 
 const fadeIn = (direction, type, delay, duration) => {
   return {
@@ -37,25 +37,7 @@ const Experience = () => {
         </h2>
       </motion.div>
       
-      {/* 3D Earth Globe Model */}
-      <motion.div 
-        variants={fadeIn("up", "spring", 0.2, 1)} 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          width: '100%', 
-          height: '400px', 
-          marginTop: '-2rem',
-          marginBottom: '2rem',
-          position: 'relative',
-          zIndex: 10
-        }}
-      >
-        <EarthCanvas />
-      </motion.div>
+      {/* Stale Earth Globe removed to fix spacing gap */}
       
       <motion.div 
         variants={fadeIn("up", "spring", 0.3, 0.75)} 
