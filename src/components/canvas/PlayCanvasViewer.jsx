@@ -52,12 +52,24 @@ const BmwModel = ({ onLoad, isMobile }) => {
 
 const BmwViewer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { rootMargin: '100px' }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -73,7 +85,7 @@ const BmwViewer = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
 
         {/* Left side: Car Model */}
-        <div style={{ 
+        <div ref={containerRef} style={{ 
           flex: 1, 
           minWidth: '300px',
           height: '500px', 
@@ -82,12 +94,16 @@ const BmwViewer = () => {
           zIndex: 10, 
           cursor: 'grab',
         }}>
-          <Canvas dpr={isMobile ? [1, 1] : [1, 2]} camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
+          <Canvas 
+            frameloop={isVisible ? "always" : "demand"}
+            dpr={isMobile ? [1, 1] : [1, 2]} 
+            camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}
+          >
             <Suspense fallback={<Loader />}>
               <Environment preset="city" />
               <BmwModel onLoad={() => setIsLoaded(true)} isMobile={isMobile} />
               <OrbitControls 
-                autoRotate 
+                autoRotate={isVisible} 
                 autoRotateSpeed={0.8} 
                 enableDamping 
                 minDistance={3} 
