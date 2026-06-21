@@ -83,9 +83,8 @@ const GamingSection = ({ isGamingMode }) => {
       className="gaming-section"
       style={{ 
         position: isGamingMode ? 'relative' : 'absolute', 
-        opacity: isGamingMode ? 1 : 0,
+        opacity: isGamingMode ? 1 : 0.001,
         pointerEvents: isGamingMode ? 'auto' : 'none',
-        visibility: isGamingMode ? 'visible' : 'hidden',
         zIndex: 0, 
         margin: '0 auto', 
         width: '100%', 
