@@ -1,9 +1,8 @@
 .card-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
   max-width: 1400px;
   padding: 0 5vw;
   box-sizing: border-box;
@@ -129,9 +128,7 @@
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .card-container {
-    width: 88vw;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    width: 100%;
     min-height: auto;
     flex-direction: column;
     gap: 2rem;

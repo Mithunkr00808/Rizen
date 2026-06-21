@@ -29,13 +29,6 @@ export default function Card({ scrollY = 0 }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Both mobile and desktop should simply use a centered transform, as the container will be placed at left: 50%
-  const transformStyle = `translate(-50%, -50%)`;
-    
-  // Center the container vertically. We push it slightly above dead center (45%) 
-  // Center the container vertically within the viewport (not the entire document)
-  const topStyle = isMobile ? '30vh' : '35vh';
-
   return (
     <motion.div 
       initial={{ opacity: 0, y: 50 }}
@@ -43,8 +36,6 @@ export default function Card({ scrollY = 0 }) {
       transition={{ duration: 1, ease: "easeOut" }}
       className="card-container" 
       style={{
-        top: topStyle,
-        transform: transformStyle,
         pointerEvents: 'auto'
       }}
     >
