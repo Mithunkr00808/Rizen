@@ -1,11 +1,14 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-const GalaxyParticles = () => {
+const GalaxyParticles = ({ isVisible }) => {
   const pointsRef = useRef();
-  const count = 50000;
+  
+  // Drop particle count by 80% on mobile to save GPU!
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const count = isMobile ? 10000 : 50000;
   
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
@@ -16,11 +19,10 @@ const GalaxyParticles = () => {
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = Math.random() * 9; // Increased radius heavily
+      const radius = Math.random() * 9; 
       const spinAngle = radius * 1.2;
       const branchAngle = ((i % 4) / 4) * Math.PI * 2;
 
-      // Reduced randomness to prevent dust particles from shooting outside the canvas bounding box
       const randomness = 0.4;
       const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * randomness * radius;
       const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * randomness * radius;
@@ -41,7 +43,8 @@ const GalaxyParticles = () => {
   }, [count]);
 
   useFrame(() => {
-    if (pointsRef.current) {
+    // Only spin the massive galaxy if it is actually visible on screen!
+    if (pointsRef.current && isVisible) {
       pointsRef.current.rotation.y += 0.001;
     }
   });
@@ -64,11 +67,28 @@ const GalaxyParticles = () => {
 };
 
 const GalaxyCanvas = () => {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '100px' } // Add a 100px buffer before it unmounts to prevent visual popping
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
       <Canvas camera={{ position: [0, 14, 21], fov: 75 }} gl={{ antialias: true }}>
         <OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} />
-        <GalaxyParticles />
+        <GalaxyParticles isVisible={isVisible} />
       </Canvas>
     </div>
   );
