@@ -55,7 +55,7 @@ export default function Card({ scrollY = 0 }) {
 
   // Math for the dissolve effect
   const dissolveProgress = Math.min(1, Math.max(0, scrollY / 300));
-  const cardOpacity = Math.max(0.001, 1 - scrollY / 200); // Fades out faster than particles
+  const cardOpacity = Math.max(0, 1 - scrollY / 200); // Fades out faster than particles
   const cardBlur = scrollY * 0.05; // Gets blurry as it dissolves
   const cardScale = 1 + scrollY * 0.002; // Expands slightly
   const pointerEvents = cardOpacity > 0 ? 'auto' : 'none';
