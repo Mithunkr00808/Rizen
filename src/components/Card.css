@@ -1,15 +1,21 @@
 .card-container {
   position: fixed;
-  left: 28vw;
+  left: 15vw; /* Adjusted left to make room for Earth */
   top: 50%;
   transform: translateY(-50%);
-  width: 600px;
-  min-height: 460px;
-  height: auto;
+  width: auto; /* Let flex handle width */
+  display: flex;
+  align-items: center;
+  gap: 4rem;
   z-index: 10;
   perspective: 1000px;
   pointer-events: none;
-  /* Let the container pass clicks */
+}
+
+.glass-card-wrapper {
+  width: 600px;
+  min-height: 460px;
+  height: auto;
 }
 
 .glass-card {
@@ -121,8 +127,15 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     min-height: auto;
+    flex-direction: column;
+    gap: 2rem;
   }
   
+  .glass-card-wrapper {
+    width: 100%;
+    min-height: auto;
+  }
+
   .glass-card {
     padding: 24px;
   }
