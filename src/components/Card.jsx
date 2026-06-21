@@ -112,12 +112,12 @@ export default function Card({ scrollY = 0 }) {
         </div>
       </div>
 
-      {/* The Earth Globe (placed to the right) */}
+      {/* The Galaxy (placed to the right) */}
       <div className="hero-earth" style={{
         width: '100%',
-        maxWidth: isMobile ? '100%' : '500px',
-        height: isMobile ? '350px' : '500px',
-        flex: '1 1 300px',
+        maxWidth: isMobile ? '100%' : '600px', // Increased from 500px to 600px
+        height: isMobile ? '350px' : '600px',  // Increased height to match and keep it symmetrical
+        flex: '1 1 400px', // Increased flex basis so it shares equal 50/50 space with the card
         opacity: cardOpacity,
         pointerEvents: pointerEvents,
         display: 'flex',
