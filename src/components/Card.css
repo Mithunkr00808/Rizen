@@ -1,10 +1,10 @@
 .card-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 85vh;
+  padding: 120px 5vw 0 5vw;
   margin: 0 auto;
   max-width: 1400px;
-  padding: 0 5vw;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
