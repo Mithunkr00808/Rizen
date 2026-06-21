@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Section.css';
 import BorderGlow from './BorderGlow';
 import GradientText from './GradientText';
-
 
 const fadeIn = (direction, type, delay, duration) => {
   return {
@@ -27,8 +26,28 @@ const fadeIn = (direction, type, delay, duration) => {
 };
 
 const Experience = () => {
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) setHasScrolled(true);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section id="experience" className="portfolio-section">
+    <section 
+      id="experience" 
+      className="portfolio-section"
+      style={{ 
+        opacity: hasScrolled ? 1 : 0, 
+        transform: hasScrolled ? 'translateY(0)' : 'translateY(40px)',
+        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+        pointerEvents: hasScrolled ? 'auto' : 'none'
+      }}
+    >
       <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, margin: "0px 0px -150px 0px" }}>
         <h2 className="section-title">
           <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
