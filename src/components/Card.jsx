@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import EarthCanvas from './canvas/Earth';
+import GalaxyCanvas from './canvas/Galaxy';
 import './Card.css';
 
 export default function Card({ scrollY = 0 }) {
@@ -125,7 +125,7 @@ export default function Card({ scrollY = 0 }) {
         alignItems: 'center',
         transition: 'opacity 0.15s ease-out'
       }}>
-        <EarthCanvas />
+        <GalaxyCanvas />
       </div>
 
       {/* The Particles */}
