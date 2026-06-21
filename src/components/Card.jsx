@@ -58,6 +58,11 @@ export default function Card({ scrollY = 0 }) {
   const cardOpacity = Math.max(0, 1 - scrollY / 200); // Fades out faster than particles
   const cardBlur = scrollY * 0.05; // Gets blurry as it dissolves
   const cardScale = 1 + scrollY * 0.002; // Expands slightly
+  
+  // Math for the Earth (fade out very slowly, much later, and shrink slightly)
+  const earthOpacity = Math.max(0, 1 - scrollY / 800);
+  const earthScale = Math.max(0, 1 - scrollY * 0.0005);
+  
   const pointerEvents = cardOpacity > 0 ? 'auto' : 'none';
 
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
@@ -113,8 +118,8 @@ export default function Card({ scrollY = 0 }) {
       <div className="hero-earth" style={{
         width: isMobile ? '100%' : '500px',
         height: isMobile ? '350px' : '500px',
-        opacity: cardOpacity,
-        transform: `scale(${cardScale})`,
+        opacity: earthOpacity,
+        transform: `scale(${earthScale})`,
         pointerEvents: pointerEvents,
         display: 'flex',
         justifyContent: 'center',
