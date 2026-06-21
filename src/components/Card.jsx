@@ -1,30 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import GalaxyCanvas from './canvas/Galaxy';
 import './Card.css';
 
 export default function Card({ scrollY = 0 }) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
-
-  // Generate 50 random particles once for the dissolve effect
-  const particles = useMemo(() => {
-    return Array.from({ length: 50 }).map(() => ({
-      startX: (Math.random() - 0.5) * 350, // Card width is approx 350px
-      startY: (Math.random() - 0.5) * 450, // Card height is approx 450px
-      targetX: (Math.random() - 0.5) * 800 + 100, // Drift slightly right
-      targetY: (Math.random() - 1) * 600 - 100,   // Drift strongly UP (wind)
-      size: Math.random() * 5 + 2,
-      color: Math.random() > 0.2 ? 'rgba(255, 255, 255, 0.8)' : 'var(--color-primary)',
-      rotationSpeed: (Math.random() - 0.5) * 720
-    }));
-  }, []);
-
-  useEffect(() => {
-    // Component mounted
-    return () => {
-      // Component unmounted
-    };
-  }, []);
 
   const handleMouseMove = (e) => {
     const card = e.currentTarget.getBoundingClientRect();
@@ -41,15 +22,6 @@ export default function Card({ scrollY = 0 }) {
     setRotation({ x: 0, y: 0 });
   };
 
-  const parallaxY = scrollY * -0.3;
-
-  // Math for the dissolve effect
-  const dissolveProgress = Math.min(1, Math.max(0, scrollY / 300));
-  const cardOpacity = Math.max(0, 1 - scrollY / 200); // Fades out faster than particles
-  const cardBlur = scrollY * 0.05; // Gets blurry as it dissolves
-  const cardScale = 1 + scrollY * 0.002; // Expands slightly
-  const pointerEvents = cardOpacity > 0 ? 'auto' : 'none';
-
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -58,27 +30,27 @@ export default function Card({ scrollY = 0 }) {
   }, []);
 
   // Both mobile and desktop should simply use a centered transform, as the container will be placed at left: 50%
-  const transformStyle = `translate(-50%, calc(-50% + ${parallaxY}px))`;
+  const transformStyle = `translate(-50%, -50%)`;
     
   // Center the container vertically. We push it slightly above dead center (45%) 
   // so it looks visually balanced with the header, and removes the massive top gap.
   const topStyle = isMobile ? '30%' : '35%';
 
   return (
-    <div className="card-container" style={{
-      top: topStyle,
-      transform: transformStyle,
-      pointerEvents: pointerEvents,
-      transition: 'transform 0.15s ease-out, opacity 0.15s ease-out'
-    }}>
+    <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="card-container" 
+      style={{
+        top: topStyle,
+        transform: transformStyle,
+        pointerEvents: 'auto'
+      }}
+    >
 
       {/* The Main Card */}
-      <div className="glass-card-wrapper" style={{
-        opacity: cardOpacity,
-        filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
-        transform: `scale(${cardScale})`,
-        transition: 'transform 0.15s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out'
-      }}>
+      <div className="glass-card-wrapper">
         <div
           ref={cardRef}
           className="glass-card"
@@ -108,46 +80,13 @@ export default function Card({ scrollY = 0 }) {
         maxWidth: isMobile ? '100%' : '800px', // Pushed even wider to 800px
         height: isMobile ? '450px' : '800px',  // Match height to keep canvas aspect ratio square
         flex: '1 1 500px', // Pushed flex basis to dominate horizontal space
-        opacity: cardOpacity,
-        pointerEvents: pointerEvents,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-        transition: 'opacity 0.15s ease-out'
+        alignItems: 'center'
       }}>
         <GalaxyCanvas />
       </div>
 
-      {/* The Particles */}
-      {particles.map((p, i) => {
-        // Particles fade in as the card fades out, then they fade out completely
-        const pOpacity = Math.max(0, Math.min(1, scrollY / 50)) * Math.max(0, 1 - scrollY / 400);
-        const currentX = p.startX + (p.targetX - p.startX) * dissolveProgress;
-        const currentY = p.startY + (p.targetY - p.startY) * Math.pow(dissolveProgress, 1.5); // Accel upward
-        const currentRot = p.rotationSpeed * dissolveProgress;
-
-        return (
-          <div
-            key={i}
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              background: p.color,
-              borderRadius: i % 3 === 0 ? '50%' : '2px', // Mix of squares and circles
-              opacity: pOpacity,
-              transform: `translate(-50%, -50%) translate(${currentX}px, ${currentY}px) rotate(${currentRot}deg)`,
-              pointerEvents: 'none',
-              boxShadow: `0 0 ${p.size}px ${p.color}`,
-              zIndex: 10,
-              transition: 'all 0.15s ease-out'
-            }}
-          />
-        );
-      })}
-
-    </div>
+    </motion.div>
   );
 }
