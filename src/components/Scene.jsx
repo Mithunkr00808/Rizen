@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Spline from '@splinetool/react-spline';
+import EarthCanvas from './canvas/Earth';
 
 export default function Scene({ scrollY = 0, isGamingMode = false }) {
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Trigger fade in after mount
+    const timer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
   const zoomThreshold = vh * 1.2; // The point where we start zooming out (right after Experience)
 
@@ -69,7 +76,22 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
 
 
 
-      {/* Spline Sphere Removed per user request */}
+      {/* Earth Globe replacing the old Spline Sphere */}
+      <div style={{
+        width: '100%',
+        height: '100%',
+        opacity: isLoaded ? opacity : 0,
+        transition: 'opacity 2.5s ease-in-out',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        transform: parallaxTransform,
+        // Optional: color shift the earth slightly based on gaming mode!
+        filter: isMobile ? 'none' : `hue-rotate(${hueRotation}) saturate(1.5)`,
+        pointerEvents: 'auto' // Re-enable interaction for the globe!
+      }}>
+        <EarthCanvas />
+      </div>
     </div>
   );
 }
