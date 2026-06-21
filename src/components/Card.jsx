@@ -59,9 +59,8 @@ export default function Card({ scrollY = 0 }) {
   const cardBlur = scrollY * 0.05; // Gets blurry as it dissolves
   const cardScale = 1 + scrollY * 0.002; // Expands slightly
   
-  // Math for the Earth (fade out very slowly, much later, and shrink slightly)
+  // Math for the Earth (fade out very slowly, much later)
   const earthOpacity = Math.max(0, 1 - scrollY / 800);
-  const earthScale = Math.max(0, 1 - scrollY * 0.0005);
   
   const pointerEvents = cardOpacity > 0 ? 'auto' : 'none';
 
@@ -119,7 +118,6 @@ export default function Card({ scrollY = 0 }) {
         width: isMobile ? '100%' : '500px',
         height: isMobile ? '350px' : '500px',
         opacity: earthOpacity,
-        transform: `scale(${earthScale})`,
         pointerEvents: pointerEvents,
         display: 'flex',
         justifyContent: 'center',
