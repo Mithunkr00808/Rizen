@@ -65,8 +65,8 @@ const BmwViewer = () => {
       width: '100%', 
       display: 'flex',
       flexDirection: 'column',
-      opacity: isLoaded ? 1 : 0,
-      transition: 'opacity 2s ease-in-out'
+      opacity: 1,
+      transition: 'none'
     }}>
 
       {/* Content Row: Car + Map */}
