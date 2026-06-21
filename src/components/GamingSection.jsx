@@ -58,9 +58,10 @@ const GamingSection = ({ isGamingMode }) => {
     { title: "Elden Ring", rank: "Completed", role: "Strength Build" }
   ];
 
-  // Use the live API data, otherwise fall back to hardcoded data, limited to top 12
-  const displayGames = (library.length > 0 ? library : fallbackGames).slice(0, 12);
-  const xboxGames = (xboxLibrary?.recentGames ? xboxLibrary.recentGames : []).slice(0, 12);
+  // Use the live API data, otherwise fall back to hardcoded data, limited to top 12 (or 6 on mobile)
+  const displayCount = isMobile ? 6 : 12;
+  const displayGames = (library.length > 0 ? library : fallbackGames).slice(0, displayCount);
+  const xboxGames = (xboxLibrary?.recentGames ? xboxLibrary.recentGames : []).slice(0, displayCount);
 
   const rigSpecs = [
     { icon: <Cpu size={24} />, name: "Ryzen 5 5600", label: "CPU" },

@@ -160,5 +160,13 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: var(--card-bg, #120F17); /* Fallback to solid color */
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px !important; /* Simple static shadow instead of 6 layered glowing shadows */
+  }
+
+  /* Completely disable the lethal multi-layered gradient masks and blend modes on mobile */
+  .border-glow-card::before,
+  .border-glow-card::after,
+  .border-glow-card > .edge-light {
+    display: none !important;
   }
 }

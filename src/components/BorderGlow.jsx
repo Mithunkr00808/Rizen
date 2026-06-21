@@ -109,6 +109,11 @@ const BorderGlow = ({
 
   useEffect(() => {
     if (!animated || !cardRef.current) return;
+    
+    // CRITICAL: Disable extremely heavy animation sweeps on mobile devices!
+    // Running 24 simultaneous requestAnimationFrame loops completely chokes the main thread.
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return;
+
     const card = cardRef.current;
     const angleStart = 110;
     const angleEnd = 465;
