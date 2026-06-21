@@ -29,7 +29,7 @@ const fadeIn = (direction, type, delay, duration) => {
 const Experience = () => {
   return (
     <section id="experience" className="portfolio-section">
-      <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
+      <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, margin: "0px 0px -150px 0px" }}>
         <h2 className="section-title">
           <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
             Experience
@@ -43,7 +43,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.3, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
       >
         <BorderGlow
           animated={true}
@@ -74,7 +74,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.5, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
       >
         <BorderGlow
           animated={true}
@@ -109,7 +109,7 @@ const Experience = () => {
         variants={fadeIn("up", "spring", 0.7, 0.75)} 
         initial="hidden" 
         whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, margin: "0px 0px -150px 0px" }}
       >
         <BorderGlow
           animated={true}
