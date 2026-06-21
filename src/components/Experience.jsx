@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Section.css';
 import BorderGlow from './BorderGlow';
@@ -27,6 +27,14 @@ const fadeIn = (direction, type, delay, duration) => {
 };
 
 const Experience = () => {
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 1024 : false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <section id="experience" className="portfolio-section">
       <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
@@ -37,122 +45,131 @@ const Experience = () => {
         </h2>
       </motion.div>
       
-      {/* 3D Earth Globe Model */}
-      <motion.div 
-        variants={fadeIn("up", "spring", 0.2, 1)} 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          width: '100%', 
-          height: '400px', 
-          marginTop: '-2rem',
-          marginBottom: '2rem',
-          position: 'relative',
-          zIndex: 10
-        }}
-      >
-        <EarthCanvas />
-      </motion.div>
-      
-      <motion.div 
-        variants={fadeIn("up", "spring", 0.3, 0.75)} 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
-      >
-        <BorderGlow
-          animated={true}
-          glowColor="345 100 58"
-          colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
-          className="experience-card"
-          style={{ padding: '2.5rem' }}
-        >
-          <div className="experience-header">
-            <h3>Software Engineer 2</h3>
-            <span className="experience-company text-gradient-accent">@ Philips</span>
-          </div>
-          <p className="experience-duration">Present</p>
-          <p className="experience-description">
-            Specializing in Healthcare tech. Core focus on building and integrating robust solutions using HL7, EDI, and PACS Integration to streamline medical data workflows and improve patient care systems.
-          </p>
-          <div className="experience-skills">
-            <span className="glass-badge">HL7</span>
-            <span className="glass-badge">EDI</span>
-            <span className="glass-badge">PACS</span>
-            <span className="glass-badge">Healthcare Tech</span>
-          </div>
-        </BorderGlow>
-      </motion.div>
+      <div style={{ display: 'flex', gap: '4rem', flexDirection: isMobile ? 'column' : 'row', alignItems: 'flex-start', position: 'relative' }}>
+        
+        {/* Left Column: Work Timeline */}
+        <div style={{ flex: '1 1 60%', display: 'flex', flexDirection: 'column', gap: '3rem', zIndex: 10 }}>
+          
+          <motion.div 
+            variants={fadeIn("up", "spring", 0.3, 0.75)} 
+            initial="hidden" 
+            whileInView="show" 
+            viewport={{ once: true, amount: 0.25 }}
+          >
+            <BorderGlow
+              animated={true}
+              glowColor="345 100 58"
+              colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+              className="experience-card"
+              style={{ padding: '2.5rem' }}
+            >
+              <div className="experience-header">
+                <h3>Software Engineer 2</h3>
+                <span className="experience-company text-gradient-accent">@ Philips</span>
+              </div>
+              <p className="experience-duration">Present</p>
+              <p className="experience-description">
+                Specializing in Healthcare tech. Core focus on building and integrating robust solutions using HL7, EDI, and PACS Integration to streamline medical data workflows and improve patient care systems.
+              </p>
+              <div className="experience-skills">
+                <span className="glass-badge">HL7</span>
+                <span className="glass-badge">EDI</span>
+                <span className="glass-badge">PACS</span>
+                <span className="glass-badge">Healthcare Tech</span>
+              </div>
+            </BorderGlow>
+          </motion.div>
 
-      {/* Oracle */}
-      <motion.div 
-        variants={fadeIn("up", "spring", 0.5, 0.75)} 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
-      >
-        <BorderGlow
-          animated={true}
-          glowColor="345 100 58"
-          colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
-          className="experience-card"
-          style={{ padding: '2.5rem' }}
-        >
-          <div className="experience-header">
-            <h3>Interface Engineer</h3>
-            <span className="experience-company text-gradient-accent">@ Oracle</span>
-          </div>
-          <p className="experience-duration">Aug 2022 – Feb 2025 · 2 yrs 7 mos · Full-time</p>
-          <p className="experience-location">Bengaluru, Karnataka, India · Remote</p>
-          <p className="experience-description">
-            Customized client interfaces to accept client-specific HL7 message event types including ADTs, ORMs, ORUs, VXUs and QBP messages sent via TCP/IP using HL7 lower layer transfer protocol. Designed outbound interfaces to regional platforms and EHR vendors. Performed unit and internal testing on interfaces to ensure they function per specifications. Assisted with mapping logic from source files to HIE and coordinated connectivity testing, system integration testing, and User Acceptance testing. Managed all new interface projects, meeting with vendors and application owners to define scope, goals, objectives and timelines. Troubleshot and resolved technical and conceptual issues related to interfaces, providing close monitoring to ensure they run properly. Configured various environments for development and testing, including deployment to staging before go-live and maintaining them post-production. Utilized mapping techniques to convert HL7 to JSON, XML and more.
-          </p>
-          <div className="experience-skills">
-            <span className="glass-badge">HL7 Standards</span>
-            <span className="glass-badge">EDI</span>
-            <span className="glass-badge">TCP/IP</span>
-            <span className="glass-badge">EHR Integration</span>
-            <span className="glass-badge">JSON</span>
-            <span className="glass-badge">XML</span>
-            <span className="glass-badge">HIE</span>
-            <span className="glass-badge">Interface Design</span>
-          </div>
-        </BorderGlow>
-      </motion.div>
+          {/* Oracle */}
+          <motion.div 
+            variants={fadeIn("up", "spring", 0.5, 0.75)} 
+            initial="hidden" 
+            whileInView="show" 
+            viewport={{ once: true, amount: 0.25 }}
+          >
+            <BorderGlow
+              animated={true}
+              glowColor="345 100 58"
+              colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+              className="experience-card"
+              style={{ padding: '2.5rem' }}
+            >
+              <div className="experience-header">
+                <h3>Interface Engineer</h3>
+                <span className="experience-company text-gradient-accent">@ Oracle</span>
+              </div>
+              <p className="experience-duration">Aug 2022 – Feb 2025 · 2 yrs 7 mos · Full-time</p>
+              <p className="experience-location">Bengaluru, Karnataka, India · Remote</p>
+              <p className="experience-description">
+                Customized client interfaces to accept client-specific HL7 message event types including ADTs, ORMs, ORUs, VXUs and QBP messages sent via TCP/IP using HL7 lower layer transfer protocol. Designed outbound interfaces to regional platforms and EHR vendors. Performed unit and internal testing on interfaces to ensure they function per specifications. Assisted with mapping logic from source files to HIE and coordinated connectivity testing, system integration testing, and User Acceptance testing. Managed all new interface projects, meeting with vendors and application owners to define scope, goals, objectives and timelines. Troubleshot and resolved technical and conceptual issues related to interfaces, providing close monitoring to ensure they run properly. Configured various environments for development and testing, including deployment to staging before go-live and maintaining them post-production. Utilized mapping techniques to convert HL7 to JSON, XML and more.
+              </p>
+              <div className="experience-skills">
+                <span className="glass-badge">HL7 Standards</span>
+                <span className="glass-badge">EDI</span>
+                <span className="glass-badge">TCP/IP</span>
+                <span className="glass-badge">EHR Integration</span>
+                <span className="glass-badge">JSON</span>
+                <span className="glass-badge">XML</span>
+                <span className="glass-badge">HIE</span>
+                <span className="glass-badge">Interface Design</span>
+              </div>
+            </BorderGlow>
+          </motion.div>
 
-      <motion.div 
-        variants={fadeIn("up", "spring", 0.7, 0.75)} 
-        initial="hidden" 
-        whileInView="show" 
-        viewport={{ once: true, amount: 0.25 }}
-      >
-        <BorderGlow
-          animated={true}
-          glowColor="345 100 58"
-          colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
-          className="experience-card"
-          style={{ padding: '2.5rem' }}
+          <motion.div 
+            variants={fadeIn("up", "spring", 0.7, 0.75)} 
+            initial="hidden" 
+            whileInView="show" 
+            viewport={{ once: true, amount: 0.25 }}
+          >
+            <BorderGlow
+              animated={true}
+              glowColor="345 100 58"
+              colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+              className="experience-card"
+              style={{ padding: '2.5rem' }}
+            >
+              <div className="experience-header">
+                <h3>System Intern</h3>
+                <span className="experience-company text-gradient-accent">@ Oracle</span>
+              </div>
+              <p className="experience-duration">Jan 2022 – Aug 2022 · 8 mos</p>
+              <p className="experience-description">
+                Built brand new HL7 interfaces from the ground up — design, build, test and deployment. Worked on ADT, ORM, ORU, DFT, SIU and VXU message types. Investigated production issues and identified root causes. Implemented skip logics, translation tables, user exits, memory and counter variables. Monitored error queues, logs, and traces, resolving failed messages and providing ongoing support.
+              </p>
+              <div className="experience-skills">
+                <span className="glass-badge">EDI</span>
+                <span className="glass-badge">Cerner CCL</span>
+                <span className="glass-badge">HL7 Interfaces</span>
+                <span className="glass-badge">Production Support</span>
+                <span className="glass-badge">Troubleshooting</span>
+              </div>
+            </BorderGlow>
+          </motion.div>
+        </div>
+
+        {/* Right Column: Sticky Earth Globe */}
+        <motion.div 
+          variants={fadeIn("left", "spring", 0.5, 1)} 
+          initial="hidden" 
+          whileInView="show" 
+          viewport={{ once: true, amount: 0.25 }}
+          style={{ 
+            flex: '1 1 35%', 
+            position: isMobile ? 'relative' : 'sticky', 
+            top: '20vh', 
+            height: isMobile ? '400px' : '600px', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            minWidth: '300px',
+            zIndex: 5
+          }}
         >
-          <div className="experience-header">
-            <h3>System Intern</h3>
-            <span className="experience-company text-gradient-accent">@ Oracle</span>
-          </div>
-          <p className="experience-duration">Jan 2022 – Aug 2022 · 8 mos</p>
-          <p className="experience-description">
-            Built brand new HL7 interfaces from the ground up — design, build, test and deployment. Worked on ADT, ORM, ORU, DFT, SIU and VXU message types. Investigated production issues and identified root causes. Implemented skip logics, translation tables, user exits, memory and counter variables. Monitored error queues, logs, and traces, resolving failed messages and providing ongoing support.
-          </p>
-          <div className="experience-skills">
-            <span className="glass-badge">EDI</span>
-            <span className="glass-badge">Cerner CCL</span>
-            <span className="glass-badge">HL7 Interfaces</span>
-            <span className="glass-badge">Production Support</span>
-            <span className="glass-badge">Troubleshooting</span>
-          </div>
-        </BorderGlow>
-      </motion.div>
+          <EarthCanvas />
+        </motion.div>
+
+      </div>
     </section>
   );
 };
