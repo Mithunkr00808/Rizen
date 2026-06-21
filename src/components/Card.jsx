@@ -115,9 +115,9 @@ export default function Card({ scrollY = 0 }) {
       {/* The Galaxy (placed to the right) */}
       <div className="hero-earth" style={{
         width: '100%',
-        maxWidth: isMobile ? '100%' : '600px', // Increased from 500px to 600px
-        height: isMobile ? '350px' : '600px',  // Increased height to match and keep it symmetrical
-        flex: '1 1 400px', // Increased flex basis so it shares equal 50/50 space with the card
+        maxWidth: isMobile ? '100%' : '800px', // Pushed even wider to 800px
+        height: isMobile ? '450px' : '800px',  // Match height to keep canvas aspect ratio square
+        flex: '1 1 500px', // Pushed flex basis to dominate horizontal space
         opacity: cardOpacity,
         pointerEvents: pointerEvents,
         display: 'flex',
