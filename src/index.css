@@ -41,13 +41,20 @@ body {
   overflow-x: hidden;
   background: #000000;
   
-  /* Hide default browser scrollbars for an immersive app feel */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  /* Legacy IE/Edge hiding for body */
+  -ms-overflow-style: none;
 }
 
-body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+/* Nuke scrollbars globally across ALL elements and the HTML root */
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+* {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
 }
 
 #root {
