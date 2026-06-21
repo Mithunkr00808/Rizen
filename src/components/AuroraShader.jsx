@@ -135,36 +135,21 @@ export default function AuroraShader({
       const height = container.offsetHeight;
       renderer.setSize(width, height);
       program.uniforms.uResolution.value = [width, height];
+      // Render statically once on load/resize to save GPU fill-rate!
+      renderer.render({ scene: mesh });
     };
+    
+    // Set static uniforms
+    program.uniforms.uTime.value = 5.0; // Arbitrary time offset for a nice wave shape
+    program.uniforms.uAmplitude.value = amplitude;
+    program.uniforms.uBlend.value = blend;
+    program.uniforms.uMouse.value = [0.5, 0.5];
+
     window.addEventListener("resize", resize);
     resize();
 
-    const onMouseMove = (e) => {
-      // Smooth lerp for mouse
-      mouseRef.current.x += (e.clientX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (e.clientY - mouseRef.current.y) * 0.05;
-    };
-    window.addEventListener("mousemove", onMouseMove);
-
-    let animationId;
-
-    const animate = (t) => {
-      animationId = requestAnimationFrame(animate);
-
-      // Smooth interpolation
-      program.uniforms.uTime.value = t * 0.001 * speed;
-      program.uniforms.uAmplitude.value = amplitude;
-      program.uniforms.uBlend.value = blend;
-      program.uniforms.uMouse.value = [mouseRef.current.x, mouseRef.current.y];
-
-      renderer.render({ scene: mesh });
-    };
-    animate(0);
-
     return () => {
-      cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMouseMove);
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };

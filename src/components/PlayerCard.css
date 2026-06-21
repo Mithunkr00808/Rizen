@@ -162,6 +162,9 @@
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.05);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
 }
 
 .stat-row {

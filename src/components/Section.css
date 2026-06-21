@@ -112,6 +112,9 @@
   border-radius: 40px 40px 0 0;
   background: rgba(0,0,0,0.3);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
   z-index: 5;
 }
 
