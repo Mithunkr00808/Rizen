@@ -77,14 +77,16 @@ export default function Card({ scrollY = 0 }) {
     <div className="card-container" style={{
       top: topStyle,
       transform: transformStyle,
-      pointerEvents: pointerEvents
+      pointerEvents: pointerEvents,
+      transition: 'transform 0.15s ease-out, opacity 0.15s ease-out'
     }}>
 
       {/* The Main Card */}
       <div className="glass-card-wrapper" style={{
         opacity: cardOpacity,
         filter: scrollY > 0 ? `blur(${cardBlur}px)` : 'none',
-        transform: `scale(${cardScale})`
+        transform: `scale(${cardScale})`,
+        transition: 'transform 0.15s ease-out, opacity 0.15s ease-out, filter 0.15s ease-out'
       }}>
         <div
           ref={cardRef}
@@ -119,7 +121,8 @@ export default function Card({ scrollY = 0 }) {
         pointerEvents: pointerEvents,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        transition: 'opacity 0.15s ease-out'
       }}>
         <EarthCanvas />
       </div>
@@ -148,7 +151,7 @@ export default function Card({ scrollY = 0 }) {
               pointerEvents: 'none',
               boxShadow: `0 0 ${p.size}px ${p.color}`,
               zIndex: 10,
-              transition: 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
+              transition: 'all 0.15s ease-out'
             }}
           />
         );
