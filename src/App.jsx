@@ -67,7 +67,7 @@ function App() {
         <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>
       </div>
       <Scene scrollY={scrollY} isGamingMode={isGamingMode} />
-      <Card scrollY={scrollY} />
+      <Card />
       <Header />
       
       {/* Portfolio Content Sections below the fold */}

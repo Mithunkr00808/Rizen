@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import GalaxyCanvas from './canvas/Galaxy';
 import './Card.css';
 
-export default function Card({ scrollY = 0 }) {
+const Card = () => {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
@@ -80,4 +80,6 @@ export default function Card({ scrollY = 0 }) {
 
     </motion.div>
   );
-}
+};
+
+export default React.memo(Card);

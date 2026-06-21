@@ -2,7 +2,7 @@ import React from 'react';
 import { Layers } from 'lucide-react';
 import './Header.css';
 
-export default function Header() {
+const Header = () => {
   return (
     <header className="floating-header-container">
       <nav className="glass floating-navbar">
@@ -15,4 +15,6 @@ export default function Header() {
       </nav>
     </header>
   );
-}
+};
+
+export default React.memo(Header);
