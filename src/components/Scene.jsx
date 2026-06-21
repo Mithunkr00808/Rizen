@@ -88,8 +88,9 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
             width: '150%',
             height: '100vh',
             transform: parallaxTransform,
-            mixBlendMode: 'screen',
-            filter: `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.6)`,
+            // Disable lethal GPU blending and filtering on mobile to fix stuttering
+            mixBlendMode: isMobile ? 'normal' : 'screen',
+            filter: isMobile ? 'none' : `sepia(1) hue-rotate(${hueRotation}) saturate(5) brightness(1.6)`,
             transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1s ease-in-out'
           }}
         />

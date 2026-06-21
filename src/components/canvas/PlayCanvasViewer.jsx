@@ -82,7 +82,7 @@ const BmwViewer = () => {
           zIndex: 10, 
           cursor: 'grab',
         }}>
-          <Canvas camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
+          <Canvas dpr={isMobile ? [1, 1] : [1, 2]} camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
             <Suspense fallback={<Loader />}>
               <Environment preset="city" />
               <BmwModel onLoad={() => setIsLoaded(true)} isMobile={isMobile} />
