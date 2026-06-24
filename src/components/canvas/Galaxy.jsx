@@ -6,9 +6,9 @@ import * as THREE from 'three';
 const GalaxyParticles = ({ isVisible }) => {
   const pointsRef = useRef();
   
-  // Drop particle count drastically on mobile to save GPU fill-rate!
+  // Drop particle count drastically on mobile to save GPU!
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const count = isMobile ? 800 : 50000;
+  const count = isMobile ? 3000 : 50000;
   
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
@@ -56,10 +56,10 @@ const GalaxyParticles = ({ isVisible }) => {
         <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial 
-        size={isMobile ? 0.03 : 0.05} 
+        size={0.05} 
         sizeAttenuation={true} 
         depthWrite={false} 
-        blending={isMobile ? THREE.NormalBlending : THREE.AdditiveBlending} 
+        blending={THREE.AdditiveBlending} 
         vertexColors={true} 
       />
     </points>
@@ -91,7 +91,7 @@ const GalaxyCanvas = () => {
     <div ref={containerRef} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
       <Canvas 
         camera={{ position: [0, 14, 21], fov: 75 }} 
-        gl={{ antialias: false, powerPreference: "high-performance" }}
+        gl={{ antialias: true }}
         dpr={dpr}
         frameloop={isVisible ? 'always' : 'demand'}
       >
