@@ -35,10 +35,11 @@ const Stars = (props) => {
 };
 
 const StarsCanvas = () => {
-  const dpr = typeof window !== 'undefined' && window.innerWidth <= 768 ? [1, 1] : [1, 2];
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const dpr = isMobile ? [1, 1] : [1, 2];
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: -1, height: '100%', width: '100%', pointerEvents: 'none' }}>
-      <Canvas camera={{ position: [0, 0, 1] }} dpr={dpr} style={{ pointerEvents: 'none' }}>
+      <Canvas camera={{ position: [0, 0, 1] }} dpr={dpr} frameloop={isMobile ? "demand" : "always"} style={{ pointerEvents: 'none' }}>
         <Suspense fallback={null}>
           <Stars />
         </Suspense>

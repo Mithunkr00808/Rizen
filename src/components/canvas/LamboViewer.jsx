@@ -24,9 +24,12 @@ const LamboModel = () => {
 };
 
 const LamboViewer = () => {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const dpr = isMobile ? [1, 1] : [1, 2];
+
   return (
     <div style={{ width: '100%', height: '500px', cursor: 'grab', position: 'relative', zIndex: 10, marginTop: '4rem' }}>
-      <Canvas camera={{ position: [5, 2, 5], fov: 35 }} gl={{ preserveDrawingBuffer: true }}>
+      <Canvas camera={{ position: [5, 2, 5], fov: 35 }} gl={{ preserveDrawingBuffer: true }} dpr={dpr}>
         <Suspense fallback={null}>
           
           {/* Environment Lighting (Replaces EnvAtlas) */}
@@ -36,7 +39,7 @@ const LamboViewer = () => {
           <Grid infiniteGrid fadeDistance={20} sectionColor="#00ffcc" cellColor="#ffffff" />
 
           {/* Shadow Catcher */}
-          <ContactShadows position={[0, -0.01, 0]} opacity={0.7} scale={10} blur={2.5} far={4} />
+          <ContactShadows position={[0, -0.01, 0]} opacity={0.7} scale={10} blur={2.5} far={4} frames={1} />
 
           {/* Render the Model */}
           <LamboModel />

@@ -84,9 +84,17 @@ const GalaxyCanvas = () => {
     return () => observer.disconnect();
   }, []);
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const dpr = isMobile ? [1, 1] : [1, 2];
+
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
-      <Canvas camera={{ position: [0, 14, 21], fov: 75 }} gl={{ antialias: true }}>
+      <Canvas 
+        camera={{ position: [0, 14, 21], fov: 75 }} 
+        gl={{ antialias: true }}
+        dpr={dpr}
+        frameloop={isVisible ? 'always' : 'demand'}
+      >
         <OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} />
         <GalaxyParticles isVisible={isVisible} />
       </Canvas>
