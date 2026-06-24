@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Suspense } from 'react';
+const GalaxyCanvas = React.lazy(() => import('./canvas/Galaxy'));
 import './Card.css';
 
 const Card = () => {
@@ -64,6 +65,22 @@ const Card = () => {
           </div>
         </div>
       </div>
+
+      {/* The Galaxy (placed to the right) */}
+      <div className="hero-earth" style={{
+        width: '100%',
+        maxWidth: isMobile ? '100%' : '800px', // Pushed even wider to 800px
+        height: isMobile ? '300px' : '800px',  // Match height to keep canvas aspect ratio square
+        flex: '1 1 500px', // Pushed flex basis to dominate horizontal space
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc' }}>Loading Galaxy...</div>}>
+          <GalaxyCanvas />
+        </Suspense>
+      </div>
+
     </motion.div>
   );
 };

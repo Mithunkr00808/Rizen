@@ -130,6 +130,8 @@
   .card-container {
     width: 100%;
     min-height: auto;
+    padding-top: 80px; /* Reduced top padding for mobile */
+    padding-bottom: 2rem; /* Add some bottom padding before next section */
     flex-direction: column;
     gap: 2rem;
   }
