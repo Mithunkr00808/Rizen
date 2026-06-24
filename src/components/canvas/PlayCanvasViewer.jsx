@@ -20,7 +20,7 @@ function Loader() {
 }
 
 const BmwModel = ({ onLoad, isMobile }) => {
-  const { scene } = useGLTF('/bmw_m_hybrid_v8_lmdh.glb');
+  const { scene } = useGLTF('/bmw_m_hybrid_v8_lmdh_draco.glb');
   
   useEffect(() => {
     if (scene) onLoad();
@@ -161,6 +161,6 @@ const BmwViewer = () => {
 export default BmwViewer;
 
 // Preload the heavy GLTF model immediately in the background on page load
-useGLTF.preload('/bmw_m_hybrid_v8_lmdh.glb');
+useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
 
 

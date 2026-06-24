@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import GalaxyCanvas from './canvas/Galaxy';
+import { Suspense } from 'react';
+const GalaxyCanvas = React.lazy(() => import('./canvas/Galaxy'));
 import './Card.css';
 
 const Card = () => {
@@ -75,7 +76,9 @@ const Card = () => {
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-        <GalaxyCanvas />
+        <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc' }}>Loading Galaxy...</div>}>
+          <GalaxyCanvas />
+        </Suspense>
       </div>
 
     </motion.div>

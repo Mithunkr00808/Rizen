@@ -12,7 +12,6 @@
     "generate-leonardo": "node scripts/generate-leonardo.js"
   },
   "dependencies": {
-    "@playcanvas/react": "^0.11.4",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "cheerio": "^1.2.0",
@@ -20,7 +19,6 @@
     "lucide-react": "^1.21.0",
     "maath": "^0.10.8",
     "ogl": "^1.0.11",
-    "playcanvas": "^2.19.7",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-error-boundary": "^6.1.2",
