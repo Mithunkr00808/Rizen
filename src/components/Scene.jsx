@@ -38,7 +38,16 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
   // 300deg = Hot Pink (Office), 180deg = Cyan (Gaming)
   const hueRotation = isGamingMode ? '180deg' : '300deg';
 
-  // Cleaned up Spline wheel interceptor
+  // Intercept the wheel event before it reaches the Spline canvas.
+  // 3D libraries often capture mouse wheel events (for zooming) and call e.preventDefault(),
+  // which breaks page scrolling. By stopping propagation here, the browser scrolls normally!
+  useEffect(() => {
+    const allowScroll = (e) => {
+      e.stopPropagation();
+    };
+    window.addEventListener('wheel', allowScroll, { capture: true, passive: true });
+    return () => window.removeEventListener('wheel', allowScroll, { capture: true });
+  }, []);
 
   // Smoothly blend background based on gaming mode!
   const bgOpacity = isGamingMode ? Math.min(1, scrollY / 500) : 0;
@@ -56,6 +65,8 @@ export default function Scene({ scrollY = 0, isGamingMode = false }) {
         pointerEvents: 'none',
         transition: 'background 0.5s ease'
       }} />
+
+
 
     </div>
   );
