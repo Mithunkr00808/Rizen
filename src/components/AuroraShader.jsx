@@ -135,20 +135,28 @@ export default function AuroraShader({
       const height = container.offsetHeight;
       renderer.setSize(width, height);
       program.uniforms.uResolution.value = [width, height];
-      // Render statically once on load/resize to save GPU fill-rate!
-      renderer.render({ scene: mesh });
     };
     
     // Set static uniforms
-    program.uniforms.uTime.value = 5.0; // Arbitrary time offset for a nice wave shape
     program.uniforms.uAmplitude.value = amplitude;
     program.uniforms.uBlend.value = blend;
     program.uniforms.uMouse.value = [0.5, 0.5];
 
+    let animationId;
+    let time = 0;
+    const animate = () => {
+      time += 0.01 * speed;
+      program.uniforms.uTime.value = time;
+      renderer.render({ scene: mesh });
+      animationId = requestAnimationFrame(animate);
+    };
+
     window.addEventListener("resize", resize);
     resize();
+    animate();
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
