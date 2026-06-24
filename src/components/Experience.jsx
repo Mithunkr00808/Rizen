@@ -46,7 +46,7 @@ const Experience = () => {
         viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
-          animated={true}
+          animated={false}
           glowColor="345 100 58"
           colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
           className="experience-card"
@@ -77,7 +77,7 @@ const Experience = () => {
         viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
-          animated={true}
+          animated={false}
           glowColor="345 100 58"
           colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
           className="experience-card"
@@ -112,7 +112,7 @@ const Experience = () => {
         viewport={{ once: true, amount: 0.25 }}
       >
         <BorderGlow
-          animated={true}
+          animated={false}
           glowColor="345 100 58"
           colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
           className="experience-card"

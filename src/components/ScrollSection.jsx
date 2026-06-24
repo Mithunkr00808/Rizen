@@ -41,7 +41,8 @@ export default function ScrollSection({ scrollY, children, offsetMultiplier = 0.
       style={{ 
         opacity: isMobile ? 1 : 0, 
         transform: isMobile ? 'translateY(0)' : 'translateY(100px)', 
-        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out' 
+        transition: 'opacity 0.1s ease-out',
+        willChange: 'transform'
       }}
     >
       {children}
