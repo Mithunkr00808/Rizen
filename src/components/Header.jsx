@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layers } from 'lucide-react';
+import MusicPlayer from './MusicPlayer';
 import './Header.css';
 
 const Header = () => {
@@ -11,7 +12,10 @@ const Header = () => {
           <span className="logo-text">Mithun</span>
         </div>
         
-
+        
+        <div className="nav-actions" style={{ display: 'flex', gap: '16px', alignItems: 'center', pointerEvents: 'auto' }}>
+          <MusicPlayer />
+        </div>
       </nav>
     </header>
   );
