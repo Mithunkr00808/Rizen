@@ -66,27 +66,29 @@ const Card = () => {
         </div>
       </div>
 
-      {/* The Particle Sphere (placed to the right, replacing Galaxy) */}
-      <div className="hero-earth" style={{
-        width: '100%',
-        maxWidth: isMobile ? '100%' : '800px',
-        height: isMobile ? '300px' : '800px',
-        flex: '1 1 500px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <Suspense fallback={<div style={{ textAlign: 'center', color: '#ff2a5f' }}>Loading Sphere...</div>}>
-          <ParticleSphere 
-            style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }} 
-            sphereColor="#ff2a5f" 
-            scale={0.6}
-            particlesCount={3000}
-            speed={0.2}
-            stopOnHover={false}
-          />
-        </Suspense>
-      </div>
+      {/* The Particle Sphere (placed to the right, replacing Galaxy, hidden on mobile) */}
+      {!isMobile && (
+        <div className="hero-earth" style={{
+          width: '100%',
+          maxWidth: '800px',
+          height: '800px',
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+          <Suspense fallback={<div style={{ textAlign: 'center', color: '#ff2a5f' }}>Loading Sphere...</div>}>
+            <ParticleSphere 
+              style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }} 
+              sphereColor="#ff2a5f" 
+              scale={0.6}
+              particlesCount={3000}
+              speed={0.2}
+              stopOnHover={false}
+            />
+          </Suspense>
+        </div>
+      )}
 
     </motion.div>
   );

@@ -12,10 +12,14 @@ const Stars = (props) => {
   const [sphere] = useState(() => random.inSphere(new Float32Array(numStars * 3), { radius: 1.2 }));
 
   useFrame((state, delta) => {
-    // Completely pause the animation loop on mobile to save GPU cycles
-    if (ref.current && !isMobile) {
-      ref.current.rotation.x -= delta / 10;
-      ref.current.rotation.y -= delta / 15;
+    // Completely pause the rotation on mobile to save GPU cycles, but still apply parallax
+    if (ref.current) {
+      if (!isMobile) {
+        ref.current.rotation.x -= delta / 10;
+        ref.current.rotation.y -= delta / 15;
+      }
+      // Apply parallax based on scroll
+      ref.current.position.y = window.scrollY * 0.001;
     }
   });
 

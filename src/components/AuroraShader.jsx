@@ -16,6 +16,7 @@ uniform vec3 uColorStops[3];
 uniform vec2 uResolution;
 uniform float uBlend;
 uniform vec2 uMouse;
+uniform float uScrollY;
 
 out vec4 fragColor;
 
@@ -70,7 +71,7 @@ void main(){
 
   // Apply noise to create the wave shape
   float noise = snoise(vec2(uv.x * 3.0, uTime * 0.2 + m.x * 0.5));
-  float waveHeight = uv.y - (noise * 0.15 * uAmplitude);
+  float waveHeight = (uv.y + (uScrollY * 0.0002)) - (noise * 0.15 * uAmplitude);
 
   // Fade the wave out at the bottom
   float fade = smoothstep(0.0, 0.4, uv.y);
@@ -124,6 +125,7 @@ export default function AuroraShader({
           }),
         },
         uMouse: { value: [0, 0] },
+        uScrollY: { value: 0 },
       },
     });
 
@@ -147,6 +149,7 @@ export default function AuroraShader({
     const animate = () => {
       time += 0.01 * speed;
       program.uniforms.uTime.value = time;
+      program.uniforms.uScrollY.value = window.scrollY;
       renderer.render({ scene: mesh });
       animationId = requestAnimationFrame(animate);
     };

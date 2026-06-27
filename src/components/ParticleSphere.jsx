@@ -172,7 +172,11 @@ export default function ParticleSphere({
 
     const renderer = new WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(canvasWidth, canvasHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // OPTIMIZATION: Use lower pixel ratio on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+    
     renderer.outputColorSpace = "srgb";
     const canvas = renderer.domElement;
     canvas.style.position = "absolute";
@@ -459,6 +463,13 @@ export default function ParticleSphere({
           (disp) => Math.abs(disp.x) > threshold || Math.abs(disp.y) > threshold || Math.abs(disp.z) > threshold
         );
 
+      // OPTIMIZATION: Only continue animation if visible
+      if (!isVisible) {
+        animationFrameId = null;
+        animationFrameRef.current = null;
+        return;
+      }
+
       const needsContinue = true; // For standard React component we just let it run
       
       if (needsContinue) {
@@ -480,7 +491,22 @@ export default function ParticleSphere({
       }
     };
     startAnimationRef.current = startAnimation;
-    startAnimation();
+
+    // OPTIMIZATION: Use IntersectionObserver to pause when off-screen
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            lastFrameTime = performance.now(); // Prevent large delta jump
+            startAnimation();
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
 
     const handleMouseDown = (event) => {
       if (!drag) return;
@@ -791,6 +817,7 @@ export default function ParticleSphere({
     window.addEventListener("resize", handleResize);
 
     return () => {
+      observer.disconnect();
       resizeObserver.disconnect();
       window.removeEventListener("resize", handleResize);
       if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
