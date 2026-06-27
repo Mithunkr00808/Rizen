@@ -2,23 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useProgress } from '@react-three/drei';
 
 export default function SplashScreen() {
-  const { progress } = useProgress();
+  const { progress, active } = useProgress();
   const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    // When progress hits 100%, trigger the fade out animation
-    if (progress === 100) {
-      setIsFadingOut(true);
-      
-      // Remove the DOM node entirely after the fade completes
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 800);
-      
-      return () => clearTimeout(timer);
+    let fadeTimer;
+    let removeTimer;
+
+    // When progress hits 100%, or if nothing is actively loading after a short delay
+    if (progress === 100 || !active) {
+      fadeTimer = setTimeout(() => {
+        setIsFadingOut(true);
+        // Remove the DOM node entirely after the fade completes
+        removeTimer = setTimeout(() => {
+          setIsVisible(false);
+        }, 800);
+      }, 500); // 500ms grace period in case loading just hasn't started yet
     }
-  }, [progress]);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, [progress, active]);
 
   if (!isVisible) return null;
 
