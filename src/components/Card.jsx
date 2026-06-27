@@ -23,9 +23,15 @@ const Card = () => {
     setRotation({ x: 0, y: 0 });
   };
 
-  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 768);
+  const checkIsMobile = () => {
+    if (typeof window === 'undefined') return false;
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return window.innerWidth <= 768 || isMobileUA;
+  };
+
+  const [isMobile, setIsMobile] = useState(checkIsMobile);
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(checkIsMobile());
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

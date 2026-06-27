@@ -108,7 +108,7 @@ const GamingSection = ({ isGamingMode }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', maxWidth: '1200px', margin: '0 auto', alignItems: 'center' }}>
         
         {/* Top: 3D Player Card & Earth Globe */}
-        <motion.div variants={fadeIn("up", "spring", 0.3, 0.75)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '2rem' }}>
+        <motion.div variants={fadeIn("left", "spring", 0.3, 1)} className="gaming-hero-row" style={{ width: '100%', minHeight: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '2rem' }}>
           <PlayerCard />
           {/* Temporarily disabled Earth Globe for performance testing */}
           {/* <div className="earth-container" style={{ width: '100%', maxWidth: '400px', height: isMobile ? '250px' : '400px', maxHeight: '500px', zIndex: 10, position: 'relative', transform: isMobile ? 'none' : 'translateX(40px)' }}>
@@ -119,7 +119,7 @@ const GamingSection = ({ isGamingMode }) => {
         {/* 3D PlayCanvas Model Viewer moved to bottom */}
 
         {/* Bottom: Static Rig Card */}
-        <motion.div variants={fadeIn("up", "spring", 0.5, 0.75)} style={{ width: '100%' }}>
+        <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%' }}>
           <BorderGlow
             animated={true}
             glowColor="180 100 50" // Cyberpunk Cyan
@@ -157,7 +157,7 @@ const GamingSection = ({ isGamingMode }) => {
       {/* Bottom Row: Description & Games Grid */}
       <div style={{ maxWidth: '1200px', margin: '3rem auto 0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
-        <motion.div variants={fadeIn("up", "spring", 0.7, 0.75)} style={{ marginTop: '3rem', marginBottom: '3rem' }}>
+        <motion.div variants={fadeIn("left", "spring", 0.3, 1)} style={{ marginTop: '3rem', marginBottom: '3rem' }}>
           <ValorantCard />
         </motion.div>
 
@@ -220,7 +220,7 @@ const GamingSection = ({ isGamingMode }) => {
             MY FAV
           </GradientText>
         </motion.h3>
-        <motion.div variants={fadeIn("up", "spring", 0.8, 0.75)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
+        <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
           <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
             <PlayCanvasViewer />
           </Suspense>

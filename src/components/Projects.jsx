@@ -5,6 +5,7 @@ import { Link as LinkIcon } from 'lucide-react';
 import './Section.css';
 import BorderGlow from './BorderGlow';
 import GradientText from './GradientText';
+import TextReveal from './TextReveal';
 
 // Framer Motion variant directly ported from the reference repo
 const fadeIn = (direction, type, delay, duration) => {
@@ -55,20 +56,25 @@ export default function Projects() {
           </GradientText>
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '-1rem', marginBottom: '3rem', maxWidth: '600px', lineHeight: 1.6 }}>
-          Following projects showcase my skills and experience through real-world examples of my work. Each project is briefly described with links to code repositories and live demos in it. It reflects my ability to solve complex problems, work with different technologies, and manage projects effectively.
+          <TextReveal delay={0.2} stagger={0.02}>
+            Following projects showcase my skills and experience through real-world examples of my work. Each project is briefly described with links to code repositories and live demos in it. It reflects my ability to solve complex problems, work with different technologies, and manage projects effectively.
+          </TextReveal>
         </p>
       </motion.div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
-        {projects.map((project, index) => (
-          <motion.div 
-            key={project.title}
-            variants={fadeIn("up", "spring", index * 0.5, 0.75)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
-            style={{ width: '100%', maxWidth: '360px' }}
-          >
+        {projects.map((project, index) => {
+          // Alternate direction based on index
+          const direction = index % 2 === 0 ? "right" : "left";
+          return (
+            <motion.div 
+              key={project.title}
+              variants={fadeIn(direction, "spring", index * 0.2, 1)}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.25 }}
+              style={{ width: '100%', maxWidth: '360px' }}
+            >
             <Tilt
               tiltEnable
               tiltMaxAngleX={30}
@@ -133,7 +139,8 @@ export default function Projects() {
               </BorderGlow>
             </Tilt>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

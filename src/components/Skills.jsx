@@ -53,15 +53,17 @@ const Skills = () => {
       </motion.div>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.5rem' }}>
-        {skills.map((skill, index) => (
-          <motion.div 
-            key={skill.name}
-            variants={fadeIn("up", "spring", index * 0.1, 0.75)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
-            style={{ height: '100%', width: '100%' }}
-          >
+        {skills.map((skill, index) => {
+          const direction = index % 2 === 0 ? "left" : "right";
+          return (
+            <motion.div 
+              key={skill.name}
+              variants={fadeIn(direction, "spring", index * 0.1, 0.75)}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.25 }}
+              style={{ height: '100%', width: '100%' }}
+            >
             <Tilt
               glareEnable
               tiltEnable
@@ -97,7 +99,8 @@ const Skills = () => {
               </div>
             </Tilt>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
