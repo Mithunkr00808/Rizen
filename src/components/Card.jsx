@@ -72,6 +72,7 @@ const Card = () => {
           width: '100%',
           maxWidth: '800px',
           height: '800px',
+          flex: '1 1 500px',
           position: 'relative',
           display: 'flex',
           justifyContent: 'center',
