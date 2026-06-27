@@ -221,9 +221,11 @@ const GamingSection = ({ isGamingMode }) => {
           </GradientText>
         </motion.h3>
         <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
-          <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
-            <PlayCanvasViewer />
-          </Suspense>
+          {isGamingMode && (
+            <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
+              <PlayCanvasViewer />
+            </Suspense>
+          )}
         </motion.div>
       </div>
       <style>{`
