@@ -13,6 +13,10 @@ import AuroraShader from './components/AuroraShader';
 import StarsCanvas from './components/canvas/Stars';
 import SplashScreen from './components/SplashScreen';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useGLTF } from '@react-three/drei';
+
+// Preload the heavy GLTF model immediately in the background on page load
+useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
 
 const AURORA_COLORS = ["#ff2a5f", "#7a22ff", "#00ffcc"];
 

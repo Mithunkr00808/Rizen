@@ -50,7 +50,7 @@ const BmwModel = ({ onLoad, isMobile }) => {
   );
 };
 
-const BmwViewer = () => {
+const BmwViewer = ({ isGamingMode = true }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -82,7 +82,7 @@ const BmwViewer = () => {
           zIndex: 10, 
           cursor: 'grab',
         }}>
-          <Canvas dpr={isMobile ? [1, 1] : [1, 2]} camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
+          <Canvas frameloop={isGamingMode ? "always" : "demand"} dpr={isMobile ? [1, 1] : [1, 2]} camera={{ position: [5, 2, 5], fov: isMobile ? 55 : 35 }}>
             <Suspense fallback={<Loader />}>
               <Environment preset="city" />
               <BmwModel onLoad={() => setIsLoaded(true)} isMobile={isMobile} />
@@ -159,8 +159,3 @@ const BmwViewer = () => {
 };
 
 export default BmwViewer;
-
-// Preload the heavy GLTF model immediately in the background on page load
-useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
-
-

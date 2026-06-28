@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, startTransition } from 'react';
 import './Section.css';
 import './LiquidGlass.css';
 
@@ -29,9 +29,13 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
 
     // Automatically trigger the global mode shift when it crosses the center!
     if (currentProgress > 0.5 && !isGamingMode) {
-      setIsGamingMode(true);
+      startTransition(() => {
+        setIsGamingMode(true);
+      });
     } else if (currentProgress <= 0.5 && isGamingMode) {
-      setIsGamingMode(false);
+      startTransition(() => {
+        setIsGamingMode(false);
+      });
     }
   }, [scrollY, isGamingMode, setIsGamingMode]);
 
@@ -56,7 +60,9 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
     isAnimating.current = true;
     
     // 1. Instantly flip the state to render the GamingSection
-    setIsGamingMode(prev => !prev);
+    startTransition(() => {
+      setIsGamingMode(prev => !prev);
+    });
     
     // 2. Give the DOM a tiny fraction of a second to render the massive new section, 
     // then smoothly scroll down into it!

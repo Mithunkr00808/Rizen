@@ -9,7 +9,7 @@ import useXboxLibrary from '../hooks/useXboxLibrary';
 import ValorantCard from './ValorantCard';
 import { Suspense } from 'react';
 const EarthCanvas = React.lazy(() => import('./canvas/Earth'));
-const PlayCanvasViewer = React.lazy(() => import('./canvas/PlayCanvasViewer'));
+import PlayCanvasViewer from './canvas/PlayCanvasViewer';
 import SteamGameCard from './SteamGameCard';
 import XboxGameCard from './XboxGameCard';
 import Carousel3D from './Carousel3D';
@@ -221,11 +221,9 @@ const GamingSection = ({ isGamingMode }) => {
           </GradientText>
         </motion.h3>
         <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
-          {isGamingMode && (
-            <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
-              <PlayCanvasViewer />
-            </Suspense>
-          )}
+          <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
+            <PlayCanvasViewer isGamingMode={isGamingMode} />
+          </Suspense>
         </motion.div>
       </div>
       <style>{`
