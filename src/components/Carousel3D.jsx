@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 export default function Carousel3D({
   items = [],
@@ -7,6 +7,8 @@ export default function Carousel3D({
   radius: fixedRadius, // optional fixed radius
   containerClassName = "",
   itemClassName = "",
+  duration = 120, // seconds for a full 360 degree rotation
+  rotationDirection = "left", // "left" or "right"
 }) {
   const n = items.length;
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
@@ -17,6 +19,28 @@ export default function Carousel3D({
   const [isDragging, setIsDragging] = useState(false);
   const startX = useRef(0);
   const startRotation = useRef(0);
+  const lastTimeRef = useRef(performance.now());
+
+  // Auto-rotation loop
+  useEffect(() => {
+    if (isDragging) {
+      lastTimeRef.current = performance.now();
+      return;
+    }
+    let animationFrameId;
+    const animate = (time) => {
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+      
+      const speed = 360 / (duration * 1000); // degrees per millisecond
+      const direction = rotationDirection === "left" ? 1 : -1;
+      
+      setRotation(prev => prev + speed * delta * direction);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isDragging, duration, rotationDirection]);
 
   if (n === 0) return null;
 

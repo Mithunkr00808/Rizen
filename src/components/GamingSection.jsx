@@ -174,7 +174,7 @@ const GamingSection = ({ isGamingMode }) => {
         <div style={{ width: '100%', margin: '2rem 0' }}>
           <Carousel3D 
             items={displayGames.map((game, idx) => <SteamGameCard key={game.appid || game.title} game={game} index={idx} />)}
-            duration={45} 
+            duration={120} 
             cardWidth={280} 
             rotationDirection="left"
           />
@@ -194,7 +194,7 @@ const GamingSection = ({ isGamingMode }) => {
           <div style={{ width: '100%', margin: '2rem 0' }}>
             <Carousel3D 
               items={xboxGames.map((game, idx) => <XboxGameCard key={game.title} game={game} index={idx} />)}
-              duration={40} 
+              duration={150} 
               cardWidth={280} 
               rotationDirection="right"
             />
