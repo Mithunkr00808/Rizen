@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Suspense } from 'react';
-const ParticleSphere = React.lazy(() => import('./ParticleSphere'));
+import ParticleSphere from './ParticleSphere';
 import './Card.css';
 
 const Card = () => {
@@ -84,16 +83,14 @@ const Card = () => {
           justifyContent: 'center',
           alignItems: 'center'
         }}>
-          <Suspense fallback={<div style={{ textAlign: 'center', color: '#ff2a5f' }}>Loading Sphere...</div>}>
-            <ParticleSphere 
-              style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }} 
-              sphereColor="#ff2a5f" 
-              scale={0.6}
-              particlesCount={3000}
-              speed={0.2}
-              stopOnHover={false}
-            />
-          </Suspense>
+          <ParticleSphere 
+            style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }} 
+            sphereColor="#ff2a5f" 
+            scale={0.6}
+            particlesCount={3000}
+            speed={0.2}
+            stopOnHover={false}
+          />
         </div>
       )}
 

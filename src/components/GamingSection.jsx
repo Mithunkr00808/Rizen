@@ -7,6 +7,7 @@ import PlayerCard from './PlayerCard';
 import useSteamLibrary from '../hooks/useSteamLibrary';
 import useXboxLibrary from '../hooks/useXboxLibrary';
 import ValorantCard from './ValorantCard';
+import ClashOfClansCard from './ClashOfClansCard';
 import { Suspense } from 'react';
 const EarthCanvas = React.lazy(() => import('./canvas/Earth'));
 import PlayCanvasViewer from './canvas/PlayCanvasViewer';
@@ -157,8 +158,13 @@ const GamingSection = ({ isGamingMode }) => {
       {/* Bottom Row: Description & Games Grid */}
       <div style={{ maxWidth: '1200px', margin: '3rem auto 0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
-        <motion.div variants={fadeIn("left", "spring", 0.3, 1)} style={{ marginTop: '3rem', marginBottom: '3rem' }}>
-          <ValorantCard />
+        <motion.div variants={fadeIn("left", "spring", 0.3, 1)} style={{ marginTop: '3rem', marginBottom: '3rem', display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem' }}>
+          <div style={{ flex: 1 }}>
+            <ValorantCard />
+          </div>
+          <div style={{ flex: 1 }}>
+            <ClashOfClansCard />
+          </div>
         </motion.div>
 
 
@@ -171,7 +177,7 @@ const GamingSection = ({ isGamingMode }) => {
         
         {libraryError && <p style={{ color: 'red', fontStyle: 'italic' }}>Live data currently unavailable. Showing last known roster.</p>}
 
-        <div style={{ width: '100%', margin: '2rem 0' }}>
+        <div style={{ width: '100%', margin: '2rem 0', position: 'relative', zIndex: 10 }}>
           <Carousel3D 
             items={displayGames.map((game, idx) => <SteamGameCard key={game.appid || game.title} game={game} index={idx} />)}
             duration={120} 
@@ -191,7 +197,7 @@ const GamingSection = ({ isGamingMode }) => {
         {xboxError && <p style={{ color: 'red', fontStyle: 'italic' }}>Live data currently unavailable.</p>}
 
         {xboxGames.length > 0 && (
-          <div style={{ width: '100%', margin: '2rem 0' }}>
+          <div style={{ width: '100%', margin: '2rem 0', position: 'relative', zIndex: 10 }}>
             <Carousel3D 
               items={xboxGames.map((game, idx) => <XboxGameCard key={game.title} game={game} index={idx} />)}
               duration={150} 

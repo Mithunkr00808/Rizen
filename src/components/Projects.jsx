@@ -1,146 +1,118 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Tilt from 'react-parallax-tilt';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link as LinkIcon } from 'lucide-react';
 import './Section.css';
 import BorderGlow from './BorderGlow';
 import GradientText from './GradientText';
 import TextReveal from './TextReveal';
 
-// Framer Motion variant directly ported from the reference repo
-const fadeIn = (direction, type, delay, duration) => {
-  return {
-    hidden: {
-      x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
-      y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
-      opacity: 0,
-    },
-    show: {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      transition: {
-        type,
-        delay,
-        duration,
-        ease: "easeOut",
-      },
-    },
-  };
-};
-
 export default function Projects() {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  // Adjust scroll distance depending on the number of cards. 
+  // -50% works well for 2 cards plus intro text.
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+
   const projects = [
     {
-      title: "Clinical Data Aggregator",
-      description: "A robust backend system processing thousands of HL7 messages daily to synchronize patient records across hospital networks seamlessly and securely.",
-      tags: [{ name: "HL7", color: "text-[#00ffcc]" }, { name: "Node.js", color: "text-[#ff2a5f]" }, { name: "Healthcare", color: "text-[#7a22ff]" }],
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=600&h=400",
-      sourceCodeLink: "https://github.com"
+      title: "Layana Boutique",
+      description: "A modern, high-performance e-commerce experience. Built with Next.js 16 and React 19, it features a responsive UI with Tailwind CSS and Framer Motion. Backend powered by Firebase, with Razorpay checkout and Resend automated emails.",
+      tags: [{ name: "Next.js", color: "text-[#00ffcc]" }, { name: "Firebase", color: "text-[#ff2a5f]" }, { name: "Razorpay", color: "text-[#7a22ff]" }],
+      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=600&h=400",
+      sourceCodeLink: "https://layanaboutique.in"
     },
     {
-      title: "PACS Viewer Integration",
-      description: "Integrated seamless medical imaging retrieval directly into the provider portal using standard DICOM/PACS protocols for instant radiology access.",
-      tags: [{ name: "PACS", color: "text-[#00ffcc]" }, { name: "React", color: "text-[#ff2a5f]" }, { name: "Web API", color: "text-[#7a22ff]" }],
-      image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600&h=400",
-      sourceCodeLink: "https://github.com"
+      title: "Slice of Cake 🍰",
+      description: "Premium artisanal bakery e-commerce for custom cakes. Features interactive shopping, admin dashboard for live order tracking, automated HTML emails via Resend, and visually stunning fluid animations.",
+      tags: [{ name: "Next.js", color: "text-[#00ffcc]" }, { name: "Tailwind v4", color: "text-[#ff2a5f]" }, { name: "Resend", color: "text-[#7a22ff]" }],
+      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600&h=400",
+      sourceCodeLink: "https://cake-lemon-zeta.vercel.app/"
     }
   ];
 
   return (
-    <section id="work" className="portfolio-section">
-      <motion.div variants={fadeIn("up", "spring", 0.1, 1)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
-        <h2 className="section-title">
-          <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
-            Featured Work
-          </GradientText>
-        </h2>
-        <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '-1rem', marginBottom: '3rem', maxWidth: '600px', lineHeight: 1.6 }}>
-          <TextReveal delay={0.2} stagger={0.02}>
-            Following projects showcase my skills and experience through real-world examples of my work. Each project is briefly described with links to code repositories and live demos in it. It reflects my ability to solve complex problems, work with different technologies, and manage projects effectively.
-          </TextReveal>
-        </p>
-      </motion.div>
+    <section ref={targetRef} className="portfolio-section" style={{ height: "300vh", position: "relative", padding: 0 }}>
+      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
+        <motion.div style={{ x, display: "flex", gap: "4rem", padding: "0 10vw" }}>
+          
+          <div style={{ width: "80vw", maxWidth: "600px", flexShrink: 0, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <h2 className="section-title">
+              <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
+                Featured Work
+              </GradientText>
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '-1rem', lineHeight: 1.6, fontSize: "1.1rem" }}>
+              <TextReveal delay={0.2} stagger={0.02}>
+                Swipe or scroll down to explore my projects. This horizontal timeline showcases my skills and experience through real-world examples, reflecting my ability to solve complex problems and work with different technologies.
+              </TextReveal>
+            </p>
+          </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
-        {projects.map((project, index) => {
-          // Alternate direction based on index
-          const direction = index % 2 === 0 ? "right" : "left";
-          return (
-            <motion.div 
-              key={project.title}
-              variants={fadeIn(direction, "spring", index * 0.2, 1)}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.25 }}
-              style={{ width: '100%', maxWidth: '360px' }}
-            >
-            <Tilt
-              tiltEnable
-              tiltMaxAngleX={30}
-              tiltMaxAngleY={30}
-              style={{ height: '100%' }}
-            >
-              <BorderGlow
-                animated={true}
-                glowColor="345 100 58" // matching --color-primary #ff2a5f
-                colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
-                borderRadius={16}
-                style={{ 
-                  padding: '20px', 
-                  height: '100%'
-                }}
-              >
-                {/* Image Container */}
-                <div style={{ position: 'relative', height: '230px', width: '100%', marginBottom: '20px' }}>
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    style={{ height: '100%', width: '100%', borderRadius: '16px', objectFit: 'cover' }}
-                  />
-                  {/* GitHub Link Overlay */}
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, margin: '12px', display: 'flex', justifyContent: 'flex-end' }}>
-                    <div
-                      onClick={() => window.open(project.sourceCodeLink, "_blank")}
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(0,0,0,0.9), rgba(40,40,40,0.9))',
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        transition: 'transform 0.2s'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                      onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                    >
-                      <LinkIcon size={20} color="#fff" />
+          {projects.map((project, index) => {
+            return (
+              <div key={project.title} style={{ width: '80vw', maxWidth: '400px', flexShrink: 0 }}>
+                <Tilt
+                  tiltEnable
+                  tiltMaxAngleX={15}
+                  tiltMaxAngleY={15}
+                  style={{ height: '100%' }}
+                >
+                  <BorderGlow
+                    animated={true}
+                    glowColor="345 100 58"
+                    colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+                    borderRadius={16}
+                    style={{ 
+                      padding: '20px', 
+                      height: '100%'
+                    }}
+                  >
+                    {/* Content Container */}
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                        <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', margin: 0, paddingRight: '16px' }}>{project.title}</h3>
+                        <div
+                          onClick={() => window.open(project.sourceCodeLink, "_blank")}
+                          style={{
+                            background: 'linear-gradient(135deg, rgba(0,0,0,0.9), rgba(40,40,40,0.9))',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            flexShrink: 0,
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            transition: 'transform 0.2s'
+                          }}
+                          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                          <LinkIcon size={20} color="#fff" />
+                        </div>
+                      </div>
+                      <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>{project.description}</p>
                     </div>
-                  </div>
-                </div>
 
-                {/* Content Container */}
-                <div>
-                  <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', margin: '0 0 10px 0' }}>{project.title}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>{project.description}</p>
-                </div>
-
-                {/* Tags Container */}
-                <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {project.tags.map((tag) => (
-                    <p key={tag.name} className={tag.color} style={{ fontSize: '14px', margin: 0, fontWeight: 500 }}>
-                      #{tag.name}
-                    </p>
-                  ))}
-                </div>
-              </BorderGlow>
-            </Tilt>
-          </motion.div>
-          );
-        })}
+                    {/* Tags Container */}
+                    <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {project.tags.map((tag) => (
+                        <p key={tag.name} className={tag.color} style={{ fontSize: '14px', margin: 0, fontWeight: 500 }}>
+                          #{tag.name}
+                        </p>
+                      ))}
+                    </div>
+                  </BorderGlow>
+                </Tilt>
+              </div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

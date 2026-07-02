@@ -16,7 +16,11 @@ export default function ValorantCard() {
         padding: '2rem',
         boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        height: '100%',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       {/* Valorant Thematic Background Element */}
@@ -43,7 +47,7 @@ export default function ValorantCard() {
         {isLoading && <Loader2 className="animate-spin" color="#ff4655" />}
       </div>
 
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1 }}>
         {isLoading ? (
           <div style={{ padding: '2rem 0', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>
             Loading Static Data...
@@ -59,7 +63,7 @@ export default function ValorantCard() {
             </p>
           </div>
         ) : stats ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', height: '100%', justifyContent: 'space-between', flex: 1 }}>
             {/* Top Section: Rank and Player Info */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
               <img 

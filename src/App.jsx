@@ -4,6 +4,7 @@ import Scene from './components/Scene';
 import Card from './components/Card';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
+import Projects from './components/Projects';
 import Footer from './components/Footer';
 
 import ScrollSection from './components/ScrollSection';
@@ -12,8 +13,11 @@ import GamingSection from './components/GamingSection';
 import AuroraShader from './components/AuroraShader';
 import StarsCanvas from './components/canvas/Stars';
 import SplashScreen from './components/SplashScreen';
+import CustomCursor from './components/CustomCursor';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useGLTF } from '@react-three/drei';
+import { useKonamiCode } from './hooks/useKonamiCode';
+import confetti from 'canvas-confetti';
 
 // Preload the heavy GLTF model immediately in the background on page load
 useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
@@ -32,6 +36,19 @@ function Fallback({ error }) {
 function App() {
   const [scrollY, setScrollY] = useState(0);
   const [isGamingMode, setIsGamingMode] = useState(false);
+  const isKonamiUnlocked = useKonamiCode();
+
+  useEffect(() => {
+    if (isKonamiUnlocked) {
+      confetti({
+        particleCount: 200,
+        spread: 160,
+        origin: { y: 0.6 },
+        colors: ['#ff2a5f', '#7a22ff', '#00ffcc'],
+        zIndex: 9999
+      });
+    }
+  }, [isKonamiUnlocked]);
 
   useEffect(() => {
     // Prevent browser from automatically restoring scroll position on refresh
@@ -65,6 +82,7 @@ function App() {
 
   return (
     <div className="portfolio-container" style={{ position: 'relative' }}>
+      <CustomCursor />
       <SplashScreen />
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>
@@ -81,9 +99,15 @@ function App() {
             <Experience />
           </ScrollSection>
           
-          <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
+          {/* Projects uses sticky positioning, which breaks if any parent has overflow: hidden or transform. 
+              Since ScrollSection applies transform, we don't wrap Projects in ScrollSection. */}
+          <div style={{ pointerEvents: 'auto' }}>
+            <Projects />
+          </div>
+          
+          <div style={{ pointerEvents: 'auto' }}>
             <Skills />
-          </ScrollSection>
+          </div>
 
           {/* Liquid Glass Gaming Switch */}
           <ScrollSection scrollY={scrollY} offsetMultiplier={0.1}>
