@@ -130,7 +130,7 @@
   .card-container {
     width: 100%;
     min-height: auto;
-    padding-top: 80px; /* Reduced top padding for mobile */
+    padding-top: 120px; /* Increased top padding to prevent header overlap */
     padding-bottom: 2rem; /* Add some bottom padding before next section */
     flex-direction: column;
     gap: 2rem;

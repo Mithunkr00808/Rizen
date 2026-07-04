@@ -94,6 +94,7 @@ const GamingSection = ({ isGamingMode }) => {
         boxSizing: 'border-box', 
         marginTop: '-4vh', 
         padding: '0 5vw',
+        paddingBottom: isMobile ? '6rem' : '0',
         transition: 'opacity 0.5s ease-in-out'
       }}
     >
@@ -208,29 +209,33 @@ const GamingSection = ({ isGamingMode }) => {
         )}
 
         {/* 3D PlayCanvas Model Viewer (Moved here) */}
-        <motion.h3 
-          variants={textVariant()} 
-          style={{ 
-            fontSize: '2rem', 
-            marginTop: '4rem', 
-            textAlign: 'center', 
-            marginBottom: '1rem', 
-            color: '#fff', 
-            textShadow: '0 0 20px rgba(0,255,204,0.4)', 
-            fontWeight: 800, 
-            letterSpacing: '2px', 
-            textTransform: 'uppercase' 
-          }}
-        >
-          <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
-            MY FAV
-          </GradientText>
-        </motion.h3>
-        <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
-          <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
-            <PlayCanvasViewer isGamingMode={isGamingMode} />
-          </Suspense>
-        </motion.div>
+        {!isMobile && (
+          <>
+            <motion.h3 
+              variants={textVariant()} 
+              style={{ 
+                fontSize: '2rem', 
+                marginTop: '4rem', 
+                textAlign: 'center', 
+                marginBottom: '1rem', 
+                color: '#fff', 
+                textShadow: '0 0 20px rgba(0,255,204,0.4)', 
+                fontWeight: 800, 
+                letterSpacing: '2px', 
+                textTransform: 'uppercase' 
+              }}
+            >
+              <GradientText colors={["#00ffcc", "#00f0ff", "#7a22ff", "#00ffcc"]} animationSpeed={5}>
+                MY FAV
+              </GradientText>
+            </motion.h3>
+            <motion.div variants={fadeIn("right", "spring", 0.3, 1)} style={{ width: '100%', maxWidth: '1200px', marginTop: '1rem' }}>
+              <Suspense fallback={<div style={{ textAlign: 'center', color: '#00ffcc', padding: '2rem' }}>Loading 3D Model...</div>}>
+                <PlayCanvasViewer isGamingMode={isGamingMode} />
+              </Suspense>
+            </motion.div>
+          </>
+        )}
       </div>
       <style>{`
         @keyframes fadeIn {

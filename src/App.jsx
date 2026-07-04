@@ -20,7 +20,9 @@ import { useKonamiCode } from './hooks/useKonamiCode';
 import confetti from 'canvas-confetti';
 
 // Preload the heavy GLTF model immediately in the background on page load
-useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
+if (typeof window !== 'undefined' && window.innerWidth > 768) {
+  useGLTF.preload('/bmw_m_hybrid_v8_lmdh_draco.glb');
+}
 
 const AURORA_COLORS = ["#ff2a5f", "#7a22ff", "#00ffcc"];
 
@@ -37,6 +39,13 @@ function App() {
   const [scrollY, setScrollY] = useState(0);
   const [isGamingMode, setIsGamingMode] = useState(false);
   const isKonamiUnlocked = useKonamiCode();
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isKonamiUnlocked) {
@@ -85,15 +94,15 @@ function App() {
       <CustomCursor />
       <SplashScreen />
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1, pointerEvents: 'none' }}>
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>
-        <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>
+        {!isMobile && <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}><AuroraShader colorStops={AURORA_COLORS} blend={0.8} amplitude={1.2} speed={0.5} /></div>}
+        {!isMobile && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><StarsCanvas /></div>}
       </div>
       <Scene scrollY={scrollY} isGamingMode={isGamingMode} />
       <Card />
       <Header />
       
       {/* Portfolio Content Sections below the fold */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4vh', position: 'relative', zIndex: 10, pointerEvents: 'none', marginTop: '-10vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4vh', position: 'relative', zIndex: 10, pointerEvents: 'none', marginTop: isMobile ? '2vh' : '-10vh' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4vh', pointerEvents: 'none' }}>
           <ScrollSection scrollY={scrollY} offsetMultiplier={0.2}>
             <Experience />

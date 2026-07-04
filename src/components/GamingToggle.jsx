@@ -17,8 +17,9 @@ export default function GamingToggle({ isGamingMode, setIsGamingMode, scrollY })
 
     if (isMobile) {
       // On mobile: trigger when the toggle is slightly above the middle of the screen
-      const isVisible = rect.top < windowHeight && rect.bottom > 0;
-      currentProgress = isVisible && rect.top < windowHeight * 0.65 ? 1 : 0;
+      // Do not use rect.bottom > 0, otherwise it turns off when scrolled completely out of view!
+      const isAboveThreshold = rect.top < windowHeight * 0.65;
+      currentProgress = isAboveThreshold ? 1 : 0;
     } else {
       // Desktop: start sliding when it reaches 70% from the bottom, done at 10% from top
       const startY = windowHeight * 0.70;

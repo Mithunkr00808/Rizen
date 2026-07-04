@@ -7,11 +7,12 @@ import BorderGlow from './BorderGlow';
 
 const XboxGameCard = ({ game, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
   return (
     <motion.div style={{ width: '100%', height: '100%' }}>
       <Tilt
-        tiltEnable
+        tiltEnable={!isMobile}
         tiltMaxAngleX={15}
         tiltMaxAngleY={15}
       >
@@ -28,7 +29,7 @@ const XboxGameCard = ({ game, index }) => {
             cursor: 'pointer',
             marginBottom: 0,
             position: 'relative',
-            minHeight: '420px',
+            minHeight: isMobile ? '280px' : '420px',
             transform: isHovered ? 'translateY(-5px) scale(1.02)' : 'translateY(0) scale(1)',
             transition: 'all 0.3s ease'
           }}
@@ -66,9 +67,9 @@ const XboxGameCard = ({ game, index }) => {
               </motion.div>
             )}
             {game.coverUrl ? (
-              <img src={game.coverUrl} alt={game.title} style={{ width: '100%', height: '280px', objectFit: 'cover', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} />
+              <img src={game.coverUrl} alt={game.title} style={{ width: '100%', height: isMobile ? '160px' : '280px', objectFit: 'cover', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} />
             ) : (
-              <div style={{ width: '100%', height: '280px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+              <div style={{ width: '100%', height: isMobile ? '160px' : '280px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
                 <Gamepad2 size={48} color="#107C10" />
               </div>
             )}

@@ -65,7 +65,6 @@ const BmwViewer = ({ isGamingMode = true }) => {
       width: '100%', 
       display: 'flex',
       flexDirection: 'column',
-      opacity: isLoaded ? 1 : 0,
       transition: 'opacity 2s ease-in-out'
     }}>
 

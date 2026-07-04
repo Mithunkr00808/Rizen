@@ -34,9 +34,76 @@ export default function Projects() {
     }
   ];
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
+  if (isMobile) {
+    return (
+      <section ref={targetRef} className="portfolio-section" style={{ position: "relative", padding: "10vh 5vw", display: "flex", flexDirection: "column", gap: "3rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", textAlign: 'center' }}>
+          <h2 className="section-title">
+            <GradientText colors={["#ff2a5f", "#7a22ff", "#00ffcc", "#ff2a5f"]} animationSpeed={5}>
+              Featured Work
+            </GradientText>
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '-1rem', lineHeight: 1.6, fontSize: "1rem" }}>
+            <TextReveal delay={0.2} stagger={0.02}>
+              Scroll down to explore my projects. This timeline showcases my skills and experience through real-world examples, reflecting my ability to solve complex problems and work with different technologies.
+            </TextReveal>
+          </p>
+        </div>
+
+        {projects.map((project, index) => (
+          <div key={project.title} style={{ width: '100%', margin: '0 auto' }}>
+            <BorderGlow
+              animated={true}
+              glowColor="345 100 58"
+              colors={['#ff2a5f', '#7a22ff', '#00f0ff']}
+              borderRadius={16}
+              style={{ padding: '20px', height: '100%' }}
+            >
+              {/* Content Container */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#fff', margin: 0, paddingRight: '16px' }}>{project.title}</h3>
+                  <div
+                    onClick={() => window.open(project.sourceCodeLink, "_blank")}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(0,0,0,0.9), rgba(40,40,40,0.9))',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      border: '1px solid rgba(255,255,255,0.1)'
+                    }}
+                  >
+                    <LinkIcon size={18} color="#fff" />
+                  </div>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: 1.5, margin: 0 }}>{project.description}</p>
+              </div>
+
+              {/* Tags Container */}
+              <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {project.tags.map((tag) => (
+                  <p key={tag.name} className={tag.color} style={{ fontSize: '12px', margin: 0, fontWeight: 500 }}>
+                    #{tag.name}
+                  </p>
+                ))}
+              </div>
+            </BorderGlow>
+          </div>
+        ))}
+      </section>
+    );
+  }
+
   return (
     <section ref={targetRef} className="portfolio-section" style={{ height: "300vh", position: "relative", padding: 0 }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
+      <div style={{ position: "sticky", top: "15vh", height: "70vh", display: "flex", alignItems: "center", overflow: "hidden" }}>
         <motion.div style={{ x, display: "flex", gap: "4rem", padding: "0 10vw" }}>
           
           <div style={{ width: "80vw", maxWidth: "600px", flexShrink: 0, display: "flex", flexDirection: "column", justifyContent: "center" }}>

@@ -107,7 +107,7 @@
 .portfolio-footer {
   position: relative;
   width: 100%;
-  margin-top: 2vh;
+  margin-top: -15vh;
   padding: 5rem 10vw 2rem 10vw;
   box-sizing: border-box;
   text-align: center;
@@ -180,5 +180,6 @@
 
   .portfolio-footer {
     padding: 3rem 5vw 2rem 5vw;
+    margin-top: 2vh;
   }
 }
