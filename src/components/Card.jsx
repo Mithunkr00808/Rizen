@@ -1,9 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import ParticleSphere from './ParticleSphere';
+import { Suspense } from 'react';
+import Spline from '@splinetool/react-spline';
 import './Card.css';
 
 const Card = () => {
+  const [isSplineLoaded, setIsSplineLoaded] = useState(false);
+  const [shouldLoadSpline, setShouldLoadSpline] = useState(false);
+  
+  useEffect(() => {
+    // Delay loading the heavy Spline scene until the initial page animation finishes
+    const timer = setTimeout(() => setShouldLoadSpline(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+  
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
@@ -71,26 +81,48 @@ const Card = () => {
         </div>
       </div>
 
-      {/* The Particle Sphere (placed to the right, replacing Galaxy, hidden on mobile) */}
+      {/* The Spline Sphere (placed to the right, hidden on mobile) */}
       {!isMobile && (
         <div className="hero-earth" style={{
           width: '100%',
-          maxWidth: '800px',
-          height: '800px',
-          flex: '1 1 500px',
-          position: 'relative',
+          maxWidth: '863px',
+          height: '863px',
+          flex: '1 1 575px',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          position: 'relative',
+          opacity: isSplineLoaded ? 1 : 0,
+          transition: 'opacity 2.5s ease-in-out'
         }}>
-          <ParticleSphere 
-            style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }} 
-            sphereColor="#ff2a5f" 
-            scale={0.6}
-            particlesCount={3000}
-            speed={0.2}
-            stopOnHover={false}
-          />
+          {shouldLoadSpline && (
+            <div style={{
+              position: 'absolute',
+              width: '1400px',
+              height: '900px',
+              right: 0,
+              transformOrigin: 'right center',
+              transform: 'translateX(200px) scale(1.09)',
+              pointerEvents: 'auto',
+              clipPath: 'inset(0 0 0 50%)', // Cuts off the left half of the invisible canvas so it doesn't block the profile card!
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Spline 
+                scene="https://prod.spline.design/lRjwJUmMoOAlnAXk/scene.splinecode"
+                onLoad={() => {
+                  setTimeout(() => setIsSplineLoaded(true), 100);
+                }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  mixBlendMode: 'screen',
+                  filter: `sepia(1) hue-rotate(300deg) saturate(5) brightness(1.6)`
+                }}
+              />
+            </div>
+          )}
         </div>
       )}
 
