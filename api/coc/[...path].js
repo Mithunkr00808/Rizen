@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     Object.entries(req.query).filter(([k]) => k !== 'path')
   ).toString();
 
-  const targetUrl = `https://cocproxy.royaleapi.dev/v1/${cocPath}${queryString ? `?${queryString}` : ''}`;
+  const targetUrl = `https://cocproxy.royaleapi.dev/${cocPath}${queryString ? `?${queryString}` : ''}`;
 
   try {
     const response = await fetch(targetUrl, {
