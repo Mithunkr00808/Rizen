@@ -11,7 +11,8 @@ const __dirname = path.dirname(__filename);
 config({ path: path.resolve(__dirname, '../.env.local') });
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
-const HENRIK_API_KEY = process.env.VITE_HENRIK_API_KEY;
+// On Vercel: HENRIK_API_KEY (no VITE_ prefix). Falls back to VITE_HENRIK_API_KEY for local dev.
+const HENRIK_API_KEY = process.env.HENRIK_API_KEY || process.env.VITE_HENRIK_API_KEY;
 const RIOT_ID = process.env.VITE_RIOT_ID?.replace(/["']/g, '');
 
 const STEAM_ID = '76561199248457866'; // From previous resolution
@@ -166,7 +167,7 @@ async function fetchSteamStats() {
 
 async function fetchValorantStats() {
   console.log('Fetching Valorant Stats...');
-  if (!HENRIK_API_KEY) throw new Error("VITE_HENRIK_API_KEY is missing");
+  if (!HENRIK_API_KEY) throw new Error("HENRIK_API_KEY is missing");
   if (!RIOT_ID) throw new Error("VITE_RIOT_ID is missing");
 
   const [gameName, tagLine] = RIOT_ID.split('#');
