@@ -7,13 +7,11 @@ export default function useClashOfClansStats() {
 
   useEffect(() => {
     async function fetchStats() {
-      // The user will set these in their .env.local file
-      const apiKey = import.meta.env.VITE_COC_API_KEY;
       const playerTag = import.meta.env.VITE_COC_PLAYER_TAG;
 
-      if (!apiKey || !playerTag) {
+      if (!playerTag) {
         setIsLoading(false);
-        setError("API Key or Player Tag missing in .env.local");
+        setError("Player Tag missing in .env.local");
         return;
       }
 
@@ -21,10 +19,9 @@ export default function useClashOfClansStats() {
       const formattedTag = playerTag.replace('#', '%23');
       
       try {
-        // We use RoyaleAPI's proxy to bypass the strict IP Whitelisting requirements of the official API
-        const response = await fetch(`https://cocproxy.royaleapi.dev/v1/players/${formattedTag}`, {
+        // Route through Vite's dev proxy to avoid CORS and keep the API key server-side
+        const response = await fetch(`/api/coc/v1/players/${formattedTag}`, {
           headers: {
-            'Authorization': `Bearer ${apiKey}`,
             'Accept': 'application/json'
           }
         });
