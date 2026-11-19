@@ -7,23 +7,10 @@ export default function useClashOfClansStats() {
 
   useEffect(() => {
     async function fetchStats() {
-      const playerTag = import.meta.env.VITE_COC_PLAYER_TAG;
-
-      if (!playerTag) {
-        setIsLoading(false);
-        setError("Player Tag missing in .env.local");
-        return;
-      }
-
-      // The CoC API expects the # to be URL encoded as %23
-      const formattedTag = playerTag.replace('#', '%23');
-      
       try {
-        // Route through Vite's dev proxy to avoid CORS and keep the API key server-side
-        const response = await fetch(`/api/coc/v1/players/${formattedTag}`, {
-          headers: {
-            'Accept': 'application/json'
-          }
+        // Single dedicated endpoint - works on both local (Vite proxy) and Vercel (serverless)
+        const response = await fetch(`/api/coc-player`, {
+          headers: { 'Accept': 'application/json' }
         });
 
         if (!response.ok) {

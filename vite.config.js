@@ -66,7 +66,20 @@ export default defineConfig(({ mode }) => {
             });
           }
         },
-        '/api/coc': {
+        '/api/coc-player': {
+          target: 'https://cocproxy.royaleapi.dev',
+          changeOrigin: true,
+          rewrite: () => {
+            const tag = env.VITE_COC_PLAYER_TAG?.replace('#', '%23') || '%23PV00PGUJ2';
+            return `/v1/players/${tag}`;
+          },
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq) => {
+              const cocKey = env.COC_API_KEY || env.VITE_COC_API_KEY;
+              if (cocKey) proxyReq.setHeader('Authorization', `Bearer ${cocKey}`);
+            });
+          }
+        },
           target: 'https://cocproxy.royaleapi.dev',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/coc/, ''),

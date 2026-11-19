@@ -1,6 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/coc/:path*", "destination": "/api/coc/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
