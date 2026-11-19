@@ -3,7 +3,9 @@ export default async function handler(req, res) {
   const pathSegments = req.query.path || [];
   const cocPath = Array.isArray(pathSegments) ? pathSegments.join('/') : pathSegments;
 
-  const cocApiKey = process.env.VITE_COC_API_KEY;
+  // Use COC_API_KEY (no VITE_ prefix) on Vercel so it stays server-side only.
+  // VITE_ prefixed vars get bundled into the client by Vite, exposing the key publicly.
+  const cocApiKey = process.env.COC_API_KEY || process.env.VITE_COC_API_KEY;
   if (!cocApiKey) {
     return res.status(500).json({ error: 'CoC API key not configured on server' });
   }
