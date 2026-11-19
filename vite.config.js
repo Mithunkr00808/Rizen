@@ -79,20 +79,6 @@ export default defineConfig(({ mode }) => {
               if (cocKey) proxyReq.setHeader('Authorization', `Bearer ${cocKey}`);
             });
           }
-        },
-          target: 'https://cocproxy.royaleapi.dev',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/coc/, ''),
-          configure: (proxy, options) => {
-            proxy.on('proxyReq', (proxyReq) => {
-              // On Vercel: COC_API_KEY (no VITE_ prefix, server-side only)
-              // On local dev: falls back to VITE_COC_API_KEY from .env.local
-              const cocKey = env.COC_API_KEY || env.VITE_COC_API_KEY;
-              if (cocKey) {
-                proxyReq.setHeader('Authorization', `Bearer ${cocKey}`);
-              }
-            });
-          }
         }
       }
     }
