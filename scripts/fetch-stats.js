@@ -264,14 +264,20 @@ async function fetchValorantStats() {
 }
 
 async function main() {
-  try {
-    await fetchXboxStats();
-    await fetchSteamStats();
-    await fetchValorantStats();
-    console.log('✅ All static data updated successfully!');
-  } catch (err) {
-    console.error('❌ Error updating stats:', err);
-  }
+  const results = await Promise.allSettled([
+    fetchXboxStats(),
+    fetchSteamStats(),
+    fetchValorantStats(),
+  ]);
+
+  results.forEach((result, i) => {
+    const names = ['Xbox', 'Steam', 'Valorant'];
+    if (result.status === 'fulfilled') {
+      console.log(`✅ ${names[i]} updated successfully`);
+    } else {
+      console.error(`❌ ${names[i]} failed:`, result.reason?.message || result.reason);
+    }
+  });
 }
 
 main();
